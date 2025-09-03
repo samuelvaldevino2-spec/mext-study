@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Japonês N5</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Faixa N5 */
+    .nivel-n5 {
+      text-align: center;
+      margin: 60px 0 20px;
+      padding: 12px 0;
+      background: var(--torii);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 20px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Cards */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px var(--sombra);
+      transition: all 0.4s ease;
+      border: 1px solid var(--border);
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(229, 57, 53, 0.15);
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--torii);
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .btn-acessar {
+      display: block;
+      margin: 15px auto 10px;
+      padding: 12px 25px;
+      background: var(--torii);
+      color: rgb(255, 255, 255);
+      text-align: center;
+      border-radius: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      width: 85%;
+    }
+
+    .btn-acessar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .page-title h2 {
+        font-size: 2rem;
+      }
+      .nivel-n5 {
+        font-size: 1.5rem;
+        padding: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Japonês</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="/mext-study/lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Faixa N5 -->
+  <div class="nivel-n5">
+    NÍVEL N5
+  </div>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>⛩️ Japonês para o MEXT</h2>
+      <p>"A língua é a chave para a cultura." — Prof. Haruki</p>
+    </div>
+  </section>
+
+  <!-- Conteúdo (Cards) -->
+  <section class="cards-section">
+    <div class="container">
+      <div class="grid-cards">
+
+        <!-- Frases Básicas -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Frases Básicas</h3>
+            <div class="card-desc">
+              <p><strong>です</strong> (desu): Ser/estar</p>
+              <p><strong>じゃない</strong> (janai): Não é</p>
+              <p><strong>ます</strong> (masu): Verbo educado</p>
+              <p><strong>ません</strong> (masen): Não faz</p>
+              <p><strong>ました</strong> (mashita): Fez (passado)</p>
+              <p><strong>ませんでした</strong> (masen deshita): Não fez</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Partículas -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Partículas</h3>
+            <div class="card-desc">
+              <p><strong>は</strong> (wa): Tópico</p>
+              <p><strong>が</strong> (ga): Sujeito</p>
+              <p><strong>を</strong> (o): Objeto</p>
+              <p><strong>に</strong> (ni): Tempo/Destino</p>
+              <p><strong>で</strong> (de): Local de ação</p>
+              <p><strong>も</strong> (mo): Também</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Verbos -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Verbos</h3>
+            <div class="card-desc">
+              <p><strong>Group 1/2/3</strong>: U, Ru, Irregulares</p>
+              <p><strong>て-form</strong>: Conecta ações</p>
+              <p><strong>ない-form</strong>: Negativo</p>
+              <p><strong>たい-form</strong>: Quero fazer</p>
+              <p><strong>する</strong>, <strong>来る</strong>: Verbos irregulares</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Adjetivos -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Adjetivos</h3>
+            <div class="card-desc">
+              <p><strong>い-adjetivos</strong>: 高い (takai)</p>
+              <p><strong>な-adjetivos</strong>: 静か (shizuka)</p>
+              <p><strong>好き</strong> (suki): Gosto de</p>
+              <p><strong>嫌い</strong> (kirai): Não gosto de</p>
+              <p>Modificação e conjugação</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Tempo e Localização -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Tempo e Localização</h3>
+            <div class="card-desc">
+              <p><strong>時間</strong> (jikan): Hora</p>
+              <p><strong>ここ</strong> (koko): Aqui</p>
+              <p><strong>そこ</strong> (soko): Ali</p>
+              <p><strong>どこ</strong> (doko): Onde?</p>
+              <p><strong>これ</strong> (kore): Isso</p>
+              <p><strong>週</strong> (shuu): Semana</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conjunções -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Conjunções</h3>
+            <div class="card-desc">
+              <p><strong>そして</strong> (soshite): E então</p>
+              <p><strong>でも</strong> (demo): Mas</p>
+              <p><strong>から</strong> (kara): Porque</p>
+              <p><strong>が</strong> (ga): Mas (contraste)</p>
+              <p><strong>と</strong> (to): E (entre nomes)</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Outras Estruturas -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Outras Estruturas</h3>
+            <div class="card-desc">
+              <p><strong>ましょう</strong>: Vamos fazer</p>
+              <p><strong>てください</strong>: Por favor, faça</p>
+              <p><strong>のが好き</strong>: Gosto de fazer</p>
+              <p><strong>あります</strong>: Existir (inanimado)</p>
+              <p><strong>います</strong>: Existir (animado)</p>
+            </div>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio de fundo
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+
+      if (audioOn) {
+        audio.play().catch(e => console.log("Reprodução automática bloqueada:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+  </script>
+</body>
+</html>
