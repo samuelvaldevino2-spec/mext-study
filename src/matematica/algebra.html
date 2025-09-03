@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Álgebra</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', 'Segoe UI', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px; /* Espaço para header fixo */
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 60px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Conteúdo da aula */
+    .lesson-content {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 10px 25px var(--sombra);
+      border: 1px solid var(--border);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .lesson-content h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin: 20px 0 10px;
+      font-size: 1.6rem;
+    }
+
+    .lesson-content p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    .lesson-content ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .lesson-content li {
+      margin-bottom: 8px;
+    }
+
+    .formula {
+      background: #f8f9fa;
+      padding: 12px;
+      border-left: 4px solid var(--torii);
+      font-family: 'Courier New', monospace;
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    /* Cards de conteúdo futuro */
+    .future-cards {
+      margin: 50px 0;
+    }
+
+    .future-cards h3 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(229, 57, 53, 0.15);
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--torii);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    .btn-acessar {
+      display: block;
+      margin: 15px auto 10px;
+      padding: 10px 20px;
+      background: var(--torii);
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+      width: 80%;
+    }
+
+    .btn-acessar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 70px;
+      }
+
+      .page-title h2 {
+        font-size: 2rem;
+      }
+
+      .lesson-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Matemática</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="../lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>🧮 Álgebra</h2>
+      <p>"A álgebra é a arte de raciocinar com o desconhecido." — Adaptado de Omar Khayyám</p>
+    </div>
+  </section>
+
+  <!-- Conteúdo da aula -->
+  <section class="lesson-content">
+    <h3>O que é Álgebra?</h3>
+    <p>A álgebra é a área da matemática que estuda símbolos e as regras para manipulá-los. Em vez de trabalhar apenas com números, usamos <strong>variáveis</strong> (como x, y, z) para representar valores desconhecidos.</p>
+
+    <h3>Expressões Algébricas</h3>
+    <p>Uma expressão algébrica combina números, variáveis e operações. Exemplos:</p>
+    <ul>
+      <li><code>3x + 5</code></li>
+      <li><code>2y² - 4y + 1</code></li>
+      <li><code>√(x + 3)</code></li>
+    </ul>
+
+    <h3>Equações de 1º Grau</h3>
+    <p>São equações onde a variável tem expoente 1. A forma geral é:</p>
+    <div class="formula">ax + b = 0</div>
+    <p>Para resolver, isole a variável x:</p>
+    <div class="formula">x = -b/a</div>
+    <p>Exemplo: 2x + 4 = 10 → x = 3</p>
+
+    <h3>Equações de 2º Grau</h3>
+    <p>Têm a forma:</p>
+    <div class="formula">ax² + bx + c = 0</div>
+    <p>Solução pela fórmula de Bhaskara:</p>
+    <div class="formula">x = (-b ± √(b² - 4ac)) / (2a)</div>
+  </section>
+
+  <!-- Conteúdos Futuros -->
+  <section class="future-cards">
+    <div class="container">
+      <h3>Próximos Conteúdos</h3>
+      <div class="grid-cards">
+
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Sistemas de Equações</h3>
+            <p class="card-desc">Resolução por substituição, adição e gráficos.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Funções Lineares</h3>
+            <p class="card-desc">Gráficos, coeficientes e aplicações.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Fatoração</h3>
+            <p class="card-desc">Métodos e produtos notáveis.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio de fundo
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+
+      if (audioOn) {
+        audio.play().catch(e => console.log("Reprodução automática bloqueada:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+  </script>
+</body>
+</html>
