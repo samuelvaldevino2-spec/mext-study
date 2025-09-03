@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Exercícios de Fatoração</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 60px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Seção de Exercícios */
+    .exercises-section {
+      margin: 50px 0;
+    }
+
+    .exercises-section h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    .exercicio {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+    }
+
+    .exercicio p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .opcoes-multiplas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .opcoes-multiplas label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .opcoes-multiplas label:hover {
+      background: var(--sakura);
+      transform: scale(1.02);
+    }
+
+    /* Resultado */
+    .resultado {
+      text-align: center;
+      margin: 40px 0;
+      padding: 30px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px var(--sombra);
+      border: 1px solid var(--border);
+      display: none;
+    }
+
+    .resultado h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .btn-verificar {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 30px;
+      background: var(--torii);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: fit-content;
+    }
+
+    .btn-verificar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .feedback-correto {
+      background: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+
+    .feedback-errado {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+
+    /* Campo de resposta (lacuna) */
+    .resposta-lacuna {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    textarea.resposta-lacuna {
+      font-family: 'Courier New', monospace;
+      text-align: left;
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .page-title h2 {
+        font-size: 2rem;
+      }
+      .opcoes-multiplas {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Matemática</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="/mext-study/lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>🧮 Fatoração: Fator Comum</h2>
+      <p>"A prática é o caminho do guerreiro." — Bushido</p>
+    </div>
+  </section>
+
+  <!-- Exercícios de Múltipla Escolha -->
+  <section class="exercises-section">
+    <div class="container">
+      <h3>Exercícios Objetivos (Múltipla Escolha)</h3>
+      <form id="quiz-mc">
+        <ol class="lista-exercicios">
+          <!-- Questão 1 -->
+          <li class="exercicio">
+            <p>Factor the expression: 6x + 12y</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q1" value="a"> a) 6(x + 2y)</label>
+              <label><input type="radio" name="q1" value="b"> b) 3(2x + 4y)</label>
+              <label><input type="radio" name="q1" value="c"> c) 12(x + y)</label>
+              <label><input type="radio" name="q1" value="d"> d) 2(3x + 6y)</label>
+              <label><input type="radio" name="q1" value="e"> e) 6(x + y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 2 -->
+          <li class="exercicio">
+            <p>Factor the expression: 9a² + 3a</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q2" value="a"> a) 3a(3a + 1)</label>
+              <label><input type="radio" name="q2" value="b"> b) 9a(a + 1)</label>
+              <label><input type="radio" name="q2" value="c"> c) a(9a + 3)</label>
+              <label><input type="radio" name="q2" value="d"> d) 3(3a² + a)</label>
+              <label><input type="radio" name="q2" value="e"> e) 6a(3a + 1)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 3 -->
+          <li class="exercicio">
+            <p>Factor the expression: 15m + 25n</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q3" value="a"> a) 5(3m + 5n)</label>
+              <label><input type="radio" name="q3" value="b"> b) 15(m + n)</label>
+              <label><input type="radio" name="q3" value="c"> c) 25(3m + n)</label>
+              <label><input type="radio" name="q3" value="d"> d) 5(m + 5n)</label>
+              <label><input type="radio" name="q3" value="e"> e) 3(5m + 8n)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 4 -->
+          <li class="exercicio">
+            <p>Factor the expression: 4x³ + 8x²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q4" value="a"> a) 4x(x² + 2x)</label>
+              <label><input type="radio" name="q4" value="b"> b) 2x²(2x + 4)</label>
+              <label><input type="radio" name="q4" value="c"> c) 8x(x² + 1)</label>
+              <label><input type="radio" name="q4" value="d"> d) 4x²(x + 2)</label>
+              <label><input type="radio" name="q4" value="e"> e) x(4x² + 8x)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 5 -->
+          <li class="exercicio">
+            <p>Factor the expression: 7p² + 14p</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q5" value="a"> a) 7p(p + 2)</label>
+              <label><input type="radio" name="q5" value="b"> b) 7(p² + 2p)</label>
+              <label><input type="radio" name="q5" value="c"> c) p(7p + 14)</label>
+              <label><input type="radio" name="q5" value="d"> d) 14p(p + 1)</label>
+              <label><input type="radio" name="q5" value="e"> e) 7p(p + 14)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questões 6 a 20 (repetir o padrão) -->
+                     <!-- Questão 6 -->
+          <li class="exercicio">
+            <p>Factor the expression: 12ab + 18a</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q6" value="a"> a) 6a(2b + 3)</label>
+              <label><input type="radio" name="q6" value="b"> b) 12a(b + 1.5)</label>
+              <label><input type="radio" name="q6" value="c"> c) 3a(4b + 6)</label>
+              <label><input type="radio" name="q6" value="d"> d) 18a(b + 1)</label>
+              <label><input type="radio" name="q6" value="e"> e) a(12b + 18)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 7 -->
+          <li class="exercicio">
+            <p>Factor the expression: 20x⁴ + 30x³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q7" value="a"> a) 10x²(2x² + 3x)</label>
+              <label><input type="radio" name="q7" value="b"> b) 5x³(4x + 6)</label>
+              <label><input type="radio" name="q7" value="c"> c) 10x³(2x + 3)</label>
+              <label><input type="radio" name="q7" value="d"> d) x³(20x + 30)</label>
+              <label><input type="radio" name="q7" value="e"> e) 15x²(4x² + 2x)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 8 -->
+          <li class="exercicio">
+            <p>Factor the expression: 8m²n + 16mn²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q8" value="a"> a) 8mn(m + 2n)</label>
+              <label><input type="radio" name="q8" value="b"> b) 4mn(2m + 4n)</label>
+              <label><input type="radio" name="q8" value="c"> c) 8m(mn + 2n²)</label>
+              <label><input type="radio" name="q8" value="d"> d) 16mn(m + n)</label>
+              <label><input type="radio" name="q8" value="e"> e) 2mn(4m + 8n)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 9 -->
+          <li class="exercicio">
+            <p>Factor the expression: 27y³ + 9y²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q9" value="a"> a) 9y²(3y + 1)</label>
+              <label><input type="radio" name="q9" value="b"> b) 3y(9y² + 3y)</label>
+              <label><input type="radio" name="q9" value="c"> c) 9y(3y² + y)</label>
+              <label><input type="radio" name="q9" value="d"> d) y²(27y + 9)</label>
+              <label><input type="radio" name="q9" value="e"> e) 3y²(9y + 3)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 10 -->
+          <li class="exercicio">
+            <p>Factor the expression: 10a²b + 15ab²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q10" value="a"> a) 5ab(2a + 3b)</label>
+              <label><input type="radio" name="q10" value="b"> b) 10ab(a + 1.5b)</label>
+              <label><input type="radio" name="q10" value="c"> c) 15ab(a + b)</label>
+              <label><input type="radio" name="q10" value="d"> d) 5a(2ab + 3b²)</label>
+              <label><input type="radio" name="q10" value="e"> e) ab(10a + 15b)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 11 -->
+          <li class="exercicio">
+            <p>Factor the expression: 14x²y + 21xy²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q11" value="a"> a) 7xy(2x + 3y)</label>
+              <label><input type="radio" name="q11" value="b"> b) 14xy(x + y)</label>
+              <label><input type="radio" name="q11" value="c"> c) 7x(2xy + 3y²)</label>
+              <label><input type="radio" name="q11" value="d"> d) 21xy(x + y)</label>
+              <label><input type="radio" name="q11" value="e"> e) xy(14x + 21y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 12 -->
+          <li class="exercicio">
+            <p>Factor the expression: 18p³ + 12p²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q12" value="a"> a) 6p²(3p + 2)</label>
+              <label><input type="radio" name="q12" value="b"> b) 12p²(1.5p + 1)</label>
+              <label><input type="radio" name="q12" value="c"> c) 3p²(6p + 4)</label>
+              <label><input type="radio" name="q12" value="d"> d) 18p²(p + 0.67)</label>
+              <label><input type="radio" name="q12" value="e"> e) p²(18p + 12)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 13 -->
+          <li class="exercicio">
+            <p>Factor the expression: 24k² + 36km</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q13" value="a"> a) 12k(2k + 3m)</label>
+              <label><input type="radio" name="q13" value="b"> b) 6k(4k + 6m)</label>
+              <label><input type="radio" name="q13" value="c"> c) 24k(k + 1.5m)</label>
+              <label><input type="radio" name="q13" value="d"> d) 12km(2k + 3)</label>
+              <label><input type="radio" name="q13" value="e"> e) k(24k + 36m)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 14 -->
+          <li class="exercicio">
+            <p>Factor the expression: 5x⁵ + 10x⁴</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q14" value="a"> a) 5x⁴(x + 2)</label>
+              <label><input type="radio" name="q14" value="b"> b) 10x⁴(0.5x + 1)</label>
+              <label><input type="radio" name="q14" value="c"> c) x⁴(5x + 10)</label>
+              <label><input type="radio" name="q14" value="d"> d) 5x³(x² + 2x)</label>
+              <label><input type="radio" name="q14" value="e"> e) 2x⁴(2.5x + 5)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 15 -->
+          <li class="exercicio">
+            <p>Factor the expression: 16a³b + 24ab³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q15" value="a"> a) 8ab(2a² + 3b²)</label>
+              <label><input type="radio" name="q15" value="b"> b) 4ab(4a² + 6b²)</label>
+              <label><input type="radio" name="q15" value="c"> c) 16ab(a² + 1.5b²)</label>
+              <label><input type="radio" name="q15" value="d"> d) 8a(2a²b + 3b³)</label>
+              <label><input type="radio" name="q15" value="e"> e) ab(16a² + 24b²)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 16 -->
+          <li class="exercicio">
+            <p>Factor the expression: 30m⁴ + 45m³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q16" value="a"> a) 15m³(2m + 3)</label>
+              <label><input type="radio" name="q16" value="b"> b) 5m³(6m + 9)</label>
+              <label><input type="radio" name="q16" value="c"> c) 30m³(m + 1.5)</label>
+              <label><input type="radio" name="q16" value="d"> d) 15m²(2m² + 3m)</label>
+              <label><input type="radio" name="q16" value="e"> e) m³(30m + 45)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 17 -->
+          <li class="exercicio">
+            <p>Factor the expression: 9xy² + 27x²y</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q17" value="a"> a) 9xy(x + 3y)</label>
+              <label><input type="radio" name="q17" value="b"> b) 3xy(3x + 9y)</label>
+              <label><input type="radio" name="q17" value="c"> c) 9x(xy + 3y²)</label>
+              <label><input type="radio" name="q17" value="d"> d) 27xy(x + y)</label>
+              <label><input type="radio" name="q17" value="e"> e) xy(9x + 27y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 18 -->
+          <li class="exercicio">
+            <p>Factor the expression: 12p²q + 18pq²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q18" value="a"> a) 6pq(2p + 3q)</label>
+              <label><input type="radio" name="q18" value="b"> b) 12pq(p + 1.5q)</label>
+              <label><input type="radio" name="q18" value="c"> c) 3pq(4p + 6q)</label>
+              <label><input type="radio" name="q18" value="d"> d) 18pq(p + q)</label>
+              <label><input type="radio" name="q18" value="e"> e) pq(12p + 18q)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 19 -->
+          <li class="exercicio">
+            <p>Factor the expression: 25a⁴ + 50a³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q19" value="a"> a) 25a³(a + 2)</label>
+              <label><input type="radio" name="q19" value="b"> b) 5a³(5a + 10)</label>
+              <label><input type="radio" name="q19" value="c"> c) 25a²(a² + 2a)</label>
+              <label><input type="radio" name="q19" value="d"> d) 10a³(2.5a + 5)</label>
+              <label><input type="radio" name="q19" value="e"> e) a³(25a + 50)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <!-- Questão 20 -->
+          <li class="exercicio">
+            <p>Factor the expression: 28x²y² + 42xy³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q20" value="a"> a) 14xy²(2x + 3y)</label>
+              <label><input type="radio" name="q20" value="b"> b) 7xy²(4x + 6y)</label>
+              <label><input type="radio" name="q20" value="c"> c) 28xy²(x + 1.5y)</label>
+              <label><input type="radio" name="q20" value="d"> d) 14xy(2xy + 3y²)</label>
+              <label><input type="radio" name="q20" value="e"> e) xy²(28x + 42y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+          
+          <!-- Para brevidade, aqui estão os próximos 15 -->
+          <li class="exercicio">
+            <p>Factor the expression: 12ab + 18a</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q6" value="a"> a) 6a(2b + 3)</label>
+              <label><input type="radio" name="q6" value="b"> b) 12a(b + 1.5)</label>
+              <label><input type="radio" name="q6" value="c"> c) 3a(4b + 6)</label>
+              <label><input type="radio" name="q6" value="d"> d) 18a(b + 1)</label>
+              <label><input type="radio" name="q6" value="e"> e) a(12b + 18)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 20x⁴ + 30x³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q7" value="a"> a) 10x²(2x² + 3x)</label>
+              <label><input type="radio" name="q7" value="b"> b) 5x³(4x + 6)</label>
+              <label><input type="radio" name="q7" value="c"> c) 10x³(2x + 3)</label>
+              <label><input type="radio" name="q7" value="d"> d) x³(20x + 30)</label>
+              <label><input type="radio" name="q7" value="e"> e) 15x²(4x² + 2x)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 8m²n + 16mn²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q8" value="a"> a) 8mn(m + 2n)</label>
+              <label><input type="radio" name="q8" value="b"> b) 4mn(2m + 4n)</label>
+              <label><input type="radio" name="q8" value="c"> c) 8m(mn + 2n²)</label>
+              <label><input type="radio" name="q8" value="d"> d) 16mn(m + n)</label>
+              <label><input type="radio" name="q8" value="e"> e) 2mn(4m + 8n)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 27y³ + 9y²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q9" value="a"> a) 9y²(3y + 1)</label>
+              <label><input type="radio" name="q9" value="b"> b) 3y(9y² + 3y)</label>
+              <label><input type="radio" name="q9" value="c"> c) 9y(3y² + y)</label>
+              <label><input type="radio" name="q9" value="d"> d) y²(27y + 9)</label>
+              <label><input type="radio" name="q9" value="e"> e) 3y²(9y + 3)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 10a²b + 15ab²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q10" value="a"> a) 5ab(2a + 3b)</label>
+              <label><input type="radio" name="q10" value="b"> b) 10ab(a + 1.5b)</label>
+              <label><input type="radio" name="q10" value="c"> c) 15ab(a + b)</label>
+              <label><input type="radio" name="q10" value="d"> d) 5a(2ab + 3b²)</label>
+              <label><input type="radio" name="q10" value="e"> e) ab(10a + 15b)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 14x²y + 21xy²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q11" value="a"> a) 7xy(2x + 3y)</label>
+              <label><input type="radio" name="q11" value="b"> b) 14xy(x + y)</label>
+              <label><input type="radio" name="q11" value="c"> c) 7x(2xy + 3y²)</label>
+              <label><input type="radio" name="q11" value="d"> d) 21xy(x + y)</label>
+              <label><input type="radio" name="q11" value="e"> e) xy(14x + 21y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 18p³ + 12p²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q12" value="a"> a) 6p²(3p + 2)</label>
+              <label><input type="radio" name="q12" value="b"> b) 12p²(1.5p + 1)</label>
+              <label><input type="radio" name="q12" value="c"> c) 3p²(6p + 4)</label>
+              <label><input type="radio" name="q12" value="d"> d) 18p²(p + 0.67)</label>
+              <label><input type="radio" name="q12" value="e"> e) p²(18p + 12)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 24k² + 36km</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q13" value="a"> a) 12k(2k + 3m)</label>
+              <label><input type="radio" name="q13" value="b"> b) 6k(4k + 6m)</label>
+              <label><input type="radio" name="q13" value="c"> c) 24k(k + 1.5m)</label>
+              <label><input type="radio" name="q13" value="d"> d) 12km(2k + 3)</label>
+              <label><input type="radio" name="q13" value="e"> e) k(24k + 36m)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 5x⁵ + 10x⁴</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q14" value="a"> a) 5x⁴(x + 2)</label>
+              <label><input type="radio" name="q14" value="b"> b) 10x⁴(0.5x + 1)</label>
+              <label><input type="radio" name="q14" value="c"> c) x⁴(5x + 10)</label>
+              <label><input type="radio" name="q14" value="d"> d) 5x³(x² + 2x)</label>
+              <label><input type="radio" name="q14" value="e"> e) 2x⁴(2.5x + 5)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 16a³b + 24ab³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q15" value="a"> a) 8ab(2a² + 3b²)</label>
+              <label><input type="radio" name="q15" value="b"> b) 4ab(4a² + 6b²)</label>
+              <label><input type="radio" name="q15" value="c"> c) 16ab(a² + 1.5b²)</label>
+              <label><input type="radio" name="q15" value="d"> d) 8a(2a²b + 3b³)</label>
+              <label><input type="radio" name="q15" value="e"> e) ab(16a² + 24b²)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 30m⁴ + 45m³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q16" value="a"> a) 15m³(2m + 3)</label>
+              <label><input type="radio" name="q16" value="b"> b) 5m³(6m + 9)</label>
+              <label><input type="radio" name="q16" value="c"> c) 30m³(m + 1.5)</label>
+              <label><input type="radio" name="q16" value="d"> d) 15m²(2m² + 3m)</label>
+              <label><input type="radio" name="q16" value="e"> e) m³(30m + 45)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 9xy² + 27x²y</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q17" value="a"> a) 9xy(x + 3y)</label>
+              <label><input type="radio" name="q17" value="b"> b) 3xy(3x + 9y)</label>
+              <label><input type="radio" name="q17" value="c"> c) 9x(xy + 3y²)</label>
+              <label><input type="radio" name="q17" value="d"> d) 27xy(x + y)</label>
+              <label><input type="radio" name="q17" value="e"> e) xy(9x + 27y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 12p²q + 18pq²</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q18" value="a"> a) 6pq(2p + 3q)</label>
+              <label><input type="radio" name="q18" value="b"> b) 12pq(p + 1.5q)</label>
+              <label><input type="radio" name="q18" value="c"> c) 3pq(4p + 6q)</label>
+              <label><input type="radio" name="q18" value="d"> d) 18pq(p + q)</label>
+              <label><input type="radio" name="q18" value="e"> e) pq(12p + 18q)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 25a⁴ + 50a³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q19" value="a"> a) 25a³(a + 2)</label>
+              <label><input type="radio" name="q19" value="b"> b) 5a³(5a + 10)</label>
+              <label><input type="radio" name="q19" value="c"> c) 25a²(a² + 2a)</label>
+              <label><input type="radio" name="q19" value="d"> d) 10a³(2.5a + 5)</label>
+              <label><input type="radio" name="q19" value="e"> e) a³(25a + 50)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+
+          <li class="exercicio">
+            <p>Factor the expression: 28x²y² + 42xy³</p>
+            <div class="opcoes-multiplas">
+              <label><input type="radio" name="q20" value="a"> a) 14xy²(2x + 3y)</label>
+              <label><input type="radio" name="q20" value="b"> b) 7xy²(4x + 6y)</label>
+              <label><input type="radio" name="q20" value="c"> c) 28xy²(x + 1.5y)</label>
+              <label><input type="radio" name="q20" value="d"> d) 14xy(2xy + 3y²)</label>
+              <label><input type="radio" name="q20" value="e"> e) xy²(28x + 42y)</label>
+            </div>
+            <div class="feedback"></div>
+          </li>
+        </ol>
+        <button type="button" class="btn-verificar" onclick="verificarMC()">Verificar Respostas</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Exercícios de Lacuna -->
+  <section class="exercises-section">
+    <div class="container">
+      <h3>Exercícios de Resposta Aberta</h3>
+      <form id="quiz-lacuna">
+        <ol>
+          <li class="exercicio">
+            <p>Factor the expression: 8x + 16y</p>
+            <input type="text" class="resposta-lacuna" data-correct="8(x + 2y)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 5a² + 10a</p>
+            <input type="text" class="resposta-lacuna" data-correct="5a(a + 2)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 12m³ + 18m²</p>
+            <input type="text" class="resposta-lacuna" data-correct="6m²(2m + 3)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 9p + 27q</p>
+            <input type="text" class="resposta-lacuna" data-correct="9(p + 3q)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 15x²y + 30xy²</p>
+            <input type="text" class="resposta-lacuna" data-correct="15xy(x + 2y)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 20a³ + 25a²</p>
+            <input type="text" class="resposta-lacuna" data-correct="5a²(4a + 5)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 7mn² + 14m²n</p>
+            <input type="text" class="resposta-lacuna" data-correct="7mn(n + 2m)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 16k⁴ + 24k³</p>
+            <input type="text" class="resposta-lacuna" data-correct="8k³(2k + 3)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 10x²y² + 15xy³</p>
+            <input type="text" class="resposta-lacuna" data-correct="5xy²(2x + 3y)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 18p² + 36pq</p>
+            <input type="text" class="resposta-lacuna" data-correct="18p(p + 2q)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 21a⁵ + 28a⁴</p>
+            <input type="text" class="resposta-lacuna" data-correct="7a⁴(3a + 4)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 6xy + 12x²</p>
+            <input type="text" class="resposta-lacuna" data-correct="6x(y + 2x)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 30m²n + 45mn²</p>
+            <input type="text" class="resposta-lacuna" data-correct="15mn(2m + 3n)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 8a²b² + 16ab³</p>
+            <input type="text" class="resposta-lacuna" data-correct="8ab²(a + 2b)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 27x³ + 9x²</p>
+            <input type="text" class="resposta-lacuna" data-correct="9x²(3x + 1)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 14p²q² + 21pq³</p>
+            <input type="text" class="resposta-lacuna" data-correct="7pq²(2p + 3q)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 25k²m + 50km²</p>
+            <input type="text" class="resposta-lacuna" data-correct="25km(k + 2m)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 12x⁴ + 18x³</p>
+            <input type="text" class="resposta-lacuna" data-correct="6x³(2x + 3)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 15a²b + 20ab²</p>
+            <input type="text" class="resposta-lacuna" data-correct="5ab(3a + 4b)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>Factor the expression: 9y³ + 27y²</p>
+            <input type="text" class="resposta-lacuna" data-correct="9y²(y + 3)">
+            <div class="feedback"></div>
+          </li>
+        </ol>
+        <button type="button" class="btn-verificar" onclick="verificarLacuna()">Verificar Respostas</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Problemas Contextualizados -->
+  <section class="exercises-section">
+    <div class="container">
+      <h3>Problemas Contextualizados</h3>
+      <form id="quiz-problemas">
+        <ol>
+          <li class="exercicio">
+            <p>A rectangle has a length of 6x meters and a width of 9x meters. Factor the expression for the perimeter of the rectangle.</p>
+            <input type="text" class="resposta-lacuna" data-correct="6x(2 + 3)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>A store sells two types of items: item A costs 5a dollars, and item B costs 10a dollars. If a customer buys 3 of item A and 2 of item B, factor the total cost expression.</p>
+            <input type="text" class="resposta-lacuna" data-correct="5a(3 + 4)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>A company produces two products with production costs of 12x² dollars and 18x² dollars. Factor the total cost expression for producing both products.</p>
+            <input type="text" class="resposta-lacuna" data-correct="6x²(2 + 3)">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>A garden has an area of 15xy square meters, where x and y represent the dimensions. Factor the expression for the area to find the greatest common factor.</p>
+            <input type="text" class="resposta-lacuna" data-correct="15xy">
+            <div class="feedback"></div>
+          </li>
+          <li class="exercicio">
+            <p>A machine processes two tasks, requiring 8m² hours and 16m² hours, respectively. Factor the total time expression for both tasks.</p>
+            <input type="text" class="resposta-lacuna" data-correct="8m²(1 + 2)">
+            <div class="feedback"></div>
+          </li>
+        </ol>
+        <button type="button" class="btn-verificar" onclick="verificarProblemas()">Verificar Respostas</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Exercícios Discursivos -->
+  <section class="exercises-section">
+    <div class="container">
+      <h3>Exercícios Discursivos</h3>
+      <ol>
+        <li class="exercicio">
+          <p>Factor the expression completely: 24x³y + 36x²y²</p>
+          <textarea class="resposta-lacuna" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Factor the expression completely: 10a⁴ + 15a³b</p>
+          <textarea class="resposta-lacuna" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Factor the expression completely: 18p²q² + 27pq³</p>
+          <textarea class="resposta-lacuna" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Factor the expression completely: 30m³n + 45m²n²</p>
+          <textarea class="resposta-lacuna" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Factor the expression completely: 16x⁵ + 24x⁴y</p>
+          <textarea class="resposta-lacuna" rows="3" placeholder="Escreva sua resposta aqui..."></textarea>
+          <div class="feedback"></div>
+        </li>
+      </ol>
+      <button type="button" class="btn-verificar" onclick="verificarDiscursivos()">Verificar Respostas</button>
+    </div>
+  </section>
+
+  <!-- Resultado -->
+  <div class="container">
+    <div id="resultado" class="resultado">
+      <h4>Você acertou <span id="acertos">0</span> de <span id="total">20</span> questões!</h4>
+      <p id="mensagem-resultado"></p>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+      if (audioOn) {
+        audio.play().catch(e => console.log("Erro no áudio:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+
+    // Verificar múltipla escolha
+    function verificarMC() {
+      let acertos = 0;
+      const total = 20;
+      const respostasCorretas = {
+        q1: "a", q2: "a", q3: "a", q4: "d", q5: "a",
+        q6: "a", q7: "c", q8: "a", q9: "a", q10: "a",
+        q11: "a", q12: "a", q13: "a", q14: "a", q15: "a",
+        q16: "a", q17: "a", q18: "a", q19: "a", q20: "a"
+      };
+
+      document.querySelectorAll('.exercicio').forEach((ex, i) => {
+        const feedback = ex.querySelector('.feedback');
+        const selecionado = ex.querySelector('input:checked');
+        const correta = respostasCorretas[`q${i+1}`];
+        
+        if (selecionado && selecionado.value === correta) {
+          acertos++;
+          feedback.textContent = '✅ Correto!';
+          feedback.className = 'feedback feedback-correto';
+        } else {
+          feedback.textContent = '❌ Incorreto.';
+          feedback.className = 'feedback feedback-errado';
+        }
+        feedback.style.display = 'block';
+      });
+
+      mostrarResultado(acertos, total);
+    }
+
+    // Verificar lacuna
+    function verificarLacuna() {
+      let acertos = 0;
+      const total = 20;
+      const inputs = document.querySelectorAll('#quiz-lacuna .resposta-lacuna');
+
+      inputs.forEach(input => {
+        const feedback = input.nextElementSibling;
+        const resposta = input.value.trim().replace(/\s/g, '').toLowerCase();
+        const correta = input.dataset.correct.trim().replace(/\s/g, '').toLowerCase();
+
+        if (resposta === correta) {
+          acertos++;
+          feedback.textContent = '✅ Correto!';
+          feedback.className = 'feedback feedback-correto';
+        } else {
+          feedback.textContent = '❌ Incorreto.';
+          feedback.className = 'feedback feedback-errado';
+        }
+        feedback.style.display = 'block';
+      });
+
+      mostrarResultado(acertos, total);
+    }
+
+    // Verificar problemas
+    function verificarProblemas() {
+      let acertos = 0;
+      const total = 5;
+      const inputs = document.querySelectorAll('#quiz-problemas .resposta-lacuna');
+
+      inputs.forEach(input => {
+        const feedback = input.nextElementSibling;
+        const resposta = input.value.trim().replace(/\s/g, '').toLowerCase();
+        const correta = input.dataset.correct.trim().replace(/\s/g, '').toLowerCase();
+
+        if (resposta === correta) {
+          acertos++;
+          feedback.textContent = '✅ Correto!';
+          feedback.className = 'feedback feedback-correto';
+        } else {
+          feedback.textContent = '❌ Incorreto.';
+          feedback.className = 'feedback feedback-errado';
+        }
+        feedback.style.display = 'block';
+      });
+
+      mostrarResultado(acertos, total);
+    }
+
+    // Verificar discursivos
+    function verificarDiscursivos() {
+      alert("Respostas discursivas serão corrigidas pelo professor. Obrigado!");
+    }
+
+    // Mostrar resultado
+    function mostrarResultado(acertos, total) {
+      const resultado = document.getElementById('resultado');
+      document.getElementById('acertos').textContent = acertos;
+      document.getElementById('total').textContent = total;
+
+      const msg = document.getElementById('mensagem-resultado');
+      if (acertos === total) msg.textContent = 'Parabéns, guerreiro! Você domina a fatoração!';
+      else if (acertos >= total * 0.7) msg.textContent = 'Bom trabalho! Continue praticando.';
+      else msg.textContent = 'Revise o conceito de fator comum. Você consegue!';
+
+      resultado.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
