@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Matemática</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;           /* Rosa sakura suave */
+      --card-bg: #fffaf8;     /* Branco nevoento */
+      --text: #333;           /* Preto suave */
+      --text-soft: #666;      /* Cinza claro */
+      --sakura: #f8c5d0;       /* Rosa pastel */
+      --celeste: #a8dadc;      /* Azul céu */
+      --musgo: #76b48a;        /* Verde musgo */
+      --torii: rgba(229, 57, 53, 0.9);        /* Vermelho torii (mais suave) */
+      --border: #e0e0e0;       /* Cinza claro */
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', 'Segoe UI', sans-serif;
+      background-image:  linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho */
+    header {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.90);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0.7;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 60px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Cards de conteúdo */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px var(--sombra);
+      transition: all 0.4s ease;
+      border: 1px solid var(--border);
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(229, 57, 53, 0.15);
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--torii);
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      display: none;
+    }
+
+    .card:hover .card-desc {
+      display: block;
+    }
+
+    .btn-acessar {
+      display: block;
+      margin: 15px auto 10px;
+      padding: 12px 25px;
+      background: #e53935;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      border-radius: 12px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      width: 85%;
+    }
+
+    .btn-acessar:hover {
+      background: #000000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html#disciplinas">Disciplinas</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="../audio.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>🧮 Matemática</h2>
+      <p>"A matemática é a linguagem com a qual Deus escreveu o universo." — Galileu Galilei</p>
+    </div>
+  </section>
+
+  <!-- Cards de conteúdo -->
+  <section class="cards-section">
+    <div class="container">
+      <div class="grid-cards">
+
+        <!-- Conteúdo 1 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Álgebra Básica</h3>
+            <p class="card-desc">Equações, inequações, sistemas e funções de 1º e 2º grau.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 2 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Geometria Plana</h3>
+            <p class="card-desc">Triângulos, círculos, polígonos e teoremas fundamentais.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 3 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Geometria Espacial</h3>
+            <p class="card-desc">Sólidos geométricos, volumes e áreas de superfície.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 4 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Trigonometria</h3>
+            <p class="card-desc">Razões trigonométricas, identidades e equações.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 5 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Funções</h3>
+            <p class="card-desc">Funções exponenciais, logarítmicas, polinomiais e compostas.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 6 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Análise Combinatória</h3>
+            <p class="card-desc">Princípio fundamental da contagem, permutações, combinações.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 7 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Probabilidade</h3>
+            <p class="card-desc">Eventos, probabilidade condicional e distribuições.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 8 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Matemática Financeira</h3>
+            <p class="card-desc">Juros simples e compostos, descontos e taxas.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+        <!-- Conteúdo 9 -->
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Sequências e Progressões</h3>
+            <p class="card-desc">PA, PG, somas e aplicações.</p>
+            <a href="#" class="btn-acessar">Acessar</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio de fundo
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+
+      if (audioOn) {
+        audio.play().catch(e => console.log("Reprodução automática bloqueada:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+  </script>
+</body>
+</html>
