@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Fatoração</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 60px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Conteúdo da aula */
+    .lesson-content {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 10px 25px var(--sombra);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .lesson-content h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin: 25px 0 15px;
+      font-size: 1.6rem;
+    }
+
+    .lesson-content p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    .formula {
+      background: #f8f9fa;
+      padding: 12px;
+      border-left: 4px solid var(--torii);
+      font-family: 'Courier New', monospace;
+      margin: 15px 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    /* Exemplos */
+    .exemplo {
+      background: #fffaf8;
+      border-left: 5px solid var(--musgo);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .exemplo h4 {
+      color: var(--musgo);
+      margin-bottom: 10px;
+    }
+
+    /* Próximos conteúdos */
+    .future-cards {
+      margin: 50px 0;
+    }
+
+    .future-cards h3 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(229, 57, 53, 0.15);
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--torii);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    .btn-acessar {
+      display: block;
+      margin: 15px auto 10px;
+      padding: 10px 20px;
+      background: var(--torii);
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+      width: 80%;
+    }
+
+    .btn-acessar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .lesson-content {
+        padding: 20px;
+      }
+
+      .page-title h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Matemática</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="/mext-study/lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>🧮 Fatoração</h2>
+      <p>"Simplificar é o primeiro passo para dominar a matemática." — Adaptado de Descartes</p>
+    </div>
+  </section>
+
+  <!-- Conteúdo da aula -->
+  <section class="lesson-content">
+    <h3>O que é Fatoração?</h3>
+    <p><strong>Fatoração</strong> é o processo de transformar uma expressão algébrica em um <strong>produto de fatores mais simples</strong>. É o inverso da propriedade distributiva.</p>
+
+    <h3>1. Fator Comum em Evidência</h3>
+    <p>Quando todos os termos têm um fator em comum, colocamos esse fator em evidência.</p>
+    <div class="formula">ax + ay = a(x + y)</div>
+
+    <div class="exemplo">
+      <h4>Exemplo:</h4>
+      <p>4x + 4y = 4(x + y)</p>
+      <p>3a² + 6a = 3a(a + 2)</p>
+    </div>
+
+    <h3>2. Agrupamento</h3>
+    <p>Usado quando não há um fator comum a todos os termos.</p>
+    <div class="formula">ax + ay + bx + by = a(x + y) + b(x + y) = (x + y)(a + b)</div>
+
+    <div class="exemplo">
+      <h4>Exemplo:</h4>
+      <p>xy + 2y + 3x + 6 = y(x + 2) + 3(x + 2) = (x + 2)(y + 3)</p>
+    </div>
+
+    <h3>3. Trinômio Quadrado Perfeito</h3>
+    <p>Quando a expressão é um quadrado de um binômio.</p>
+    <div class="formula">a² + 2ab + b² = (a + b)²</div>
+    <div class="formula">a² - 2ab + b² = (a - b)²</div>
+
+    <div class="exemplo">
+      <h4>Exemplo:</h4>
+      <p>x² + 6x + 9 = (x + 3)²</p>
+      <p>4x² - 12x + 9 = (2x - 3)²</p>
+    </div>
+
+    <h3>4. Diferença de Quadrados</h3>
+    <p>Um dos mais cobrados no MEXT.</p>
+    <div class="formula">a² - b² = (a + b)(a - b)</div>
+
+    <div class="exemplo">
+      <h4>Exemplo:</h4>
+      <p>x² - 25 = (x + 5)(x - 5)</p>
+      <p>9x² - 4y² = (3x + 2y)(3x - 2y)</p>
+    </div>
+
+    <h3>Dica para o MEXT</h3>
+    <p>Memorize os produtos notáveis! Eles aparecem com frequência em questões de fatoração e simplificação.</p>
+  </section>
+
+  <!-- Próximos conteúdos -->
+  <section class="future-cards">
+    <div class="container">
+      <h3>Próximos Conteúdos</h3>
+      <div class="grid-cards">
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Produtos Notáveis</h3>
+            <p class="card-desc">Quadrado da soma, diferença e cubos.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Equações Fracionárias</h3>
+            <p class="card-desc">Resolução com fatoração.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Sistemas por Substituição</h3>
+            <p class="card-desc">Aplicação da fatoração.</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio de fundo
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+
+      if (audioOn) {
+        audio.play().catch(e => console.log("Reprodução automática bloqueada:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+  </script>
+</body>
+</html>
