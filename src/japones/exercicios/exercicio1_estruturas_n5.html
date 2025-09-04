@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Exercício: Estruturas Básicas</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Faixa N5 */
+    .nivel-n5 {
+      text-align: center;
+      margin: 60px 0 20px;
+      padding: 12px 0;
+      background: var(--torii);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 20px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Instruções */
+    .instrucoes {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 10px 25px var(--sombra);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .instrucoes h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 15px;
+    }
+
+    .instrucoes ol {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .instrucoes li {
+      margin-bottom: 10px;
+    }
+
+    /* Seção de Exercícios */
+    .exercicio-section {
+      margin: 50px 0;
+    }
+
+    .exercicio-section h3 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    .lista-exercicios {
+      list-style: decimal;
+      padding-left: 20px;
+    }
+
+    .exercicio {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+    }
+
+    .exercicio p {
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    input.resposta {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .feedback-correto {
+      background: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+
+    .feedback-errado {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+
+    .btn-verificar {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 30px;
+      background: var(--torii);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: fit-content;
+    }
+
+    .btn-verificar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Próximos conteúdos */
+    .future-cards {
+      margin: 50px 0;
+    }
+
+    .future-cards h3 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      height: auto;
+      min-height: 160px;
+    }
+    
+    .card-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px 0;
+    }
+    
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--torii);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    
+    .btn-acessar {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      background: var(--torii);
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+      width: 80%;
+    }
+    
+    .btn-acessar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .page-title h2 {
+        font-size: 2rem;
+      }
+      .nivel-n5 {
+        font-size: 1.5rem;
+        padding: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Japonês</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="/mext-study/lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Faixa N5 -->
+  <div class="nivel-n5">
+    NÍVEL N5
+  </div>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>⛩️ Exercício: Estruturas Gramaticais Básicas</h2>
+      <p>"Praticar é o caminho do guerreiro." — Bushido</p>
+    </div>
+  </section>
+
+  <!-- Instruções -->
+  <section class="instrucoes">
+    <h3>Instruções</h3>
+    <ol>
+      <li>Escreva suas respostas em japonês, usando os kanji, hiragana ou katakana corretos.</li>
+      <li>Use a forma formal (です, ます) a menos que seja pedido o informal (じゃない, じゃなかった).</li>
+      <li>Use partículas corretamente (は, を, に).</li>
+      <li>Verifique ortografia e conjugação antes de enviar.</li>
+    </ol>
+  </section>
+
+  <!-- Seção 1 -->
+  <section class="exercicio-section">
+    <div class="container">
+      <h3>Seção 1: Usando です e じゃない</h3>
+      <ol class="lista-exercicios">
+        <li class="exercicio">
+          <p>Complete a frase: これは ______ です。 (This is a pen.)</p>
+          <input type="text" class="resposta" data-correct="ぺん">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue informalmente: これは ねこ です。</p>
+          <input type="text" class="resposta" data-correct="これは ねこ じゃないです。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "This is a dog."</p>
+          <input type="text" class="resposta" data-correct="これは いぬ です。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: これは いぬ です。</p>
+          <input type="text" class="resposta" data-correct="これは いぬ じゃありません。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Complete a frase: それ ______ ほん です。</p>
+          <input type="text" class="resposta" data-correct="は">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza e negue informalmente: "This is a chair."</p>
+          <input type="text" class="resposta" data-correct="これは いす じゃないです。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Crie uma frase: Diga "This is a table" em japonês.</p>
+          <input type="text" class="resposta" data-correct="これは つくえ です。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: これは つくえ です。</p>
+          <input type="text" class="resposta" data-correct="これは つくえ じゃありません。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "This is not a cat." (formal)</p>
+          <input type="text" class="resposta" data-correct="これは ねこ じゃありません。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Complete e negue informalmente: これは ______ じゃない。</p>
+          <input type="text" class="resposta" data-correct="えんぴつ">
+          <div class="feedback"></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Seção 2 -->
+  <section class="exercicio-section">
+    <div class="container">
+      <h3>Seção 2: Usando ます e ません</h3>
+      <ol class="lista-exercicios">
+        <li class="exercicio">
+          <p>Conjugue o verbo: いく (to go) na forma educada afirmativa.</p>
+          <input type="text" class="resposta" data-correct="いきます">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: たべます</p>
+          <input type="text" class="resposta" data-correct="たべません">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "I read a book." (polite)</p>
+          <input type="text" class="resposta" data-correct="わたしは ほんを よみます。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: のみます</p>
+          <input type="text" class="resposta" data-correct="のみません">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Complete a frase: わたしは まいにち ______ ます。</p>
+          <input type="text" class="resposta" data-correct="べんきょう">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza e negue formalmente: "I write a letter."</p>
+          <input type="text" class="resposta" data-correct="わたしは てがみを かきません。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Conjugue o verbo: みる (to see) na forma educada afirmativa.</p>
+          <input type="text" class="resposta" data-correct="みます">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: かきます</p>
+          <input type="text" class="resposta" data-correct="かきません">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "I don’t listen to music." (polite)</p>
+          <input type="text" class="resposta" data-correct="わたしは おんがくを ききません。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Complete a frase: わたしは ______ ません。</p>
+          <input type="text" class="resposta" data-correct="がっこうに いきます">
+          <div class="feedback"></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Seção 3 -->
+  <section class="exercicio-section">
+    <div class="container">
+      <h3>Seção 3: Usando でした, じゃなかった, ました, ませんでした</h3>
+      <ol class="lista-exercicios">
+        <li class="exercicio">
+          <p>Complete a frase: きのう これは ______ でした。</p>
+          <input type="text" class="resposta" data-correct="ほん">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue informalmente: きのう これは ほん でした。</p>
+          <input type="text" class="resposta" data-correct="きのう これは ほん じゃなかったです。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "Yesterday, this was a pen."</p>
+          <input type="text" class="resposta" data-correct="きのう これは ぺん でした。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: きのう これは ぺん でした。</p>
+          <input type="text" class="resposta" data-correct="きのう これは ぺん じゃありませんでした。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Conjugue o verbo: たべる (to eat) no passado educado afirmativo.</p>
+          <input type="text" class="resposta" data-correct="たべました">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: きのう いきました</p>
+          <input type="text" class="resposta" data-correct="きのう いきませんでした。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "I studied yesterday." (polite)</p>
+          <input type="text" class="resposta" data-correct="きのう わたしは べんきょうしました。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Negue formalmente: きのう のみました</p>
+          <input type="text" class="resposta" data-correct="きのう のみませんでした。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Traduza para japonês: "I didn’t read a book yesterday." (polite)</p>
+          <input type="text" class="resposta" data-correct="きのう わたしは ほんを よみませんでした。">
+          <div class="feedback"></div>
+        </li>
+        <li class="exercicio">
+          <p>Complete a frase: きのう わたしは ______ ませんでした。</p>
+          <input type="text" class="resposta" data-correct="がっこうに いきました">
+          <div class="feedback"></div>
+        </li>
+      </ol>
+      <button type="button" class="btn-verificar" onclick="verificarTodas()">Verificar Respostas</button>
+    </div>
+  </section>
+
+  <!-- Resultado -->
+  <div class="container">
+    <div id="resultado" class="resultado" style="display: none; text-align: center; margin: 40px 0;">
+      <h4>Você acertou <span id="acertos">0</span> de <span id="total">30</span> questões!</h4>
+      <p id="mensagem-resultado"></p>
+    </div>
+  </div>
+
+  <!-- Próximos conteúdos -->
+  <section class="future-cards">
+    <div class="container">
+      <h3>Próximos Conteúdos</h3>
+      <div class="grid-cards">
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Partículas</h3>
+            <p class="card-desc">は, が, を, に, で, も, の</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Verbos</h3>
+            <p class="card-desc">Grupos 1, 2, 3, て-forma</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Adjetivos</h3>
+            <p class="card-desc">い-adjetivos e な-adjetivos</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+      if (audioOn) {
+        audio.play().catch(e => console.log("Erro no áudio:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+
+    // Verificar todas as respostas
+    function verificarTodas() {
+      let acertos = 0;
+      const total = 30;
+      const inputs = document.querySelectorAll('.resposta');
+
+      inputs.forEach(input => {
+        const feedback = input.nextElementSibling;
+        const resposta = input.value.trim().replace(/\s/g, '').toLowerCase();
+        const correta = input.dataset.correct.trim().replace(/\s/g, '').toLowerCase();
+
+        if (resposta === correta) {
+          acertos++;
+          feedback.textContent = '✅ Correto!';
+          feedback.className = 'feedback feedback-correto';
+        } else {
+          feedback.textContent = '❌ Incorreto.';
+          feedback.className = 'feedback feedback-errado';
+        }
+        feedback.style.display = 'block';
+      });
+
+      // Mostrar resultado
+      const resultado = document.getElementById('resultado');
+      document.getElementById('acertos').textContent = acertos;
+      document.getElementById('total').textContent = total;
+
+      const msg = document.getElementById('mensagem-resultado');
+      if (acertos === 30) msg.textContent = 'Parabéns! Você domina as estruturas básicas!';
+      else if (acertos >= 24) msg.textContent = 'Bom trabalho! Revise os erros e continue praticando.';
+      else msg.textContent = 'Revise as conjugações e tente novamente. Você consegue!';
+
+      resultado.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
