@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEXT STUDY — Verbos em Japonês</title>
+
+  <!-- Fontes elegantes -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Paleta Pastel Nipônica */
+    :root {
+      --bg: #F0DFCC;
+      --card-bg: #fffaf8;
+      --text: #333;
+      --text-soft: #666;
+      --sakura: #f8c5d0;
+      --celeste: #a8dadc;
+      --musgo: #76b48a;
+      --torii: rgba(229, 57, 53, 0.9);
+      --border: #e0e0e0;
+      --sombra: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Zen Kaku Gothic Antique', sans-serif;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.pexels.com/photos/402028/pexels-photo-402028.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+      padding-top: 80px;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Cabeçalho Fixo */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--torii);
+      padding: 15px 0;
+      z-index: 1000;
+      border-radius: 0 0 12px 12px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--torii);
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: var(--torii);
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: transform 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Faixa N5 */
+    .nivel-n5 {
+      text-align: center;
+      margin: 60px 0 20px;
+      padding: 12px 0;
+      background: var(--torii);
+      color: white;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Título da página */
+    .page-title {
+      text-align: center;
+      margin: 20px 0 30px;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+    }
+
+    .page-title h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+    }
+
+    .page-title p {
+      font-size: 1.1rem;
+      color: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      font-style: italic;
+    }
+
+    /* Conteúdo da aula */
+    .lesson-content {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 10px 25px var(--sombra);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .lesson-content h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin: 25px 0 15px;
+      font-size: 1.6rem;
+    }
+
+    .lesson-content p {
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+    }
+
+    .estrutura {
+      background: #f8f9fa;
+      border-left: 5px solid var(--torii);
+      padding: 12px 20px;
+      margin: 15px 0;
+      border-radius: 0 10px 10px 0;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+
+    .exemplo {
+      background: #fffaf8;
+      border-left: 5px solid var(--musgo);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .exemplo h4 {
+      color: var(--musgo);
+      margin-bottom: 10px;
+    }
+
+    /* Próximos conteúdos */
+    .future-cards {
+      margin: 50px 0;
+    }
+
+    .future-cards h3 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--torii);
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px var(--sombra);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      height: auto;
+      min-height: 160px;
+    }
+    
+    .card-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 10px 0;
+    }
+    
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--torii);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    
+    .btn-acessar {
+      display: block;
+      margin: 0 auto;
+      padding: 10px 20px;
+      background: var(--torii);
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+      width: 80%;
+    }
+    
+    .btn-acessar:hover {
+      background: #000;
+      transform: scale(1.05);
+    }
+
+    /* Rodapé */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: var(--torii);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .lesson-content {
+        padding: 20px;
+      }
+      .page-title h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header>
+    <div class="container">
+      <h1>MEXT STUDY</h1>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Início</a></li>
+          <li><a href="../index.html">Japonês</a></li>
+          <li><button class="audio-btn" id="audioBtn">⏸️</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Áudio de fundo -->
+  <audio id="background-audio" loop>
+    <source src="/mext-study/lofi.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <!-- Faixa N5 -->
+  <div class="nivel-n5">
+    NÍVEL N5
+  </div>
+
+  <!-- Título da página -->
+  <section class="page-title">
+    <div class="container">
+      <h2>⛩️ Verbos em Japonês</h2>
+      <p>"O verbo é a alma da sentença." — Provérbio Japonês</p>
+    </div>
+  </section>
+
+  <!-- Conteúdo da aula -->
+  <section class="lesson-content">
+    <h3>Grupos de Verbos (Verbo U e Verbo Ru)</h3>
+    <p>Os verbos japoneses são divididos em três grupos. Dominá-los é essencial para conjugação.</p>
+
+    <h4>Grupo 1: Verbos -U (Godan)</h4>
+    <p>Terminam em vogais como う, く, ぐ, す, つ, ぬ, ぶ, む, る (mas não todos os que terminam em る).</p>
+    <div class="estrutura">いく (iku) → vai<br>かく (kaku) → escreve<br>はなす (hanasu) → fala</div>
+
+    <h4>Grupo 2: Verbos -Ru (Ichidan)</h4>
+    <p>Terminam em る, mas a penúltima sílaba termina em え ou い.</p>
+    <div class="estrutura">たべる (taberu) → come<br>みる (miru) → vê<br>おきる (okiru) → acorda</div>
+
+    <h4>Grupo 3: Verbos Irregulares</h4>
+    <p>Apenas dois verbos principais:</p>
+    <div class="estrutura">する (suru) → fazer<br>くる (kuru) → vir</div>
+
+    <h3>Forma て (Te-Form)</h3>
+    <p>Usada para conectar ações, pedidos e estados contínuos.</p>
+    <ul>
+      <li><strong>Grupo 1:</strong> Troca a última vogal por って (ou いて): かく → かいて, いく → いって</li>
+      <li><strong>Grupo 2:</strong> Substitui る por て: たべる → たべて</li>
+      <li><strong>Irregulares:</strong> する → して, くる → きて</li>
+    </ul>
+    <div class="exemplo">
+      <h4>Exemplo:</h4>
+      <p>わたしは ごはんを たべて、べんきょうします。 (Comerei e estudarei.)</p>
+    </div>
+
+    <h3>Forma ない (Nai-Form)</h3>
+    <p>Negação básica do verbo.</p>
+    <ul>
+      <li><strong>Grupo 1:</strong> Troca a última vogal por あ + ない: かく → かかない</li>
+      <li><strong>Grupo 2:</strong> Substitui る por ない: たべる → たべない</li>
+      <li><strong>Irregulares:</strong> する → しない, くる → こない</li>
+    </ul>
+    <div class="exemplo">
+      <p>わたしは がっこうに いきません。 = わたしは がっこうに いかない。 (Não vou à escola.)</p>
+    </div>
+
+    <h3>Forma たい (Tai-Form)</h3>
+    <p>Expressa desejo: "quero fazer algo". Trata-se de um adjetivo i.</p>
+    <p>Conjugue o verbo na forma ます e troque por たい.</p>
+    <div class="estrutura">たべます → たべたい (quero comer)<br>いきます → いきたい (quero ir)</div>
+    <p>Negativo: たべたい → たべたくない (não quero comer)</p>
+
+    <h3>Verbos Irregulares: する e 来る</h3>
+    <p>Esses verbos têm conjugações únicas que devem ser memorizadas.</p>
+    <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+      <tr style="background: var(--sakura);">
+        <th style="padding: 10px; border: 1px solid var(--border);">Forma</th>
+        <th style="padding: 10px; border: 1px solid var(--border);">する (suru)</th>
+        <th style="padding: 10px; border: 1px solid var(--border);">くる (kuru)</th>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">ます</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">します</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">きます</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">ません</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">しません</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">きません</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">ました</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">しました</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">きました</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">ませんでした</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">しませんでした</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">きませんでした</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">て-form</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">して</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">きて</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; border: 1px solid var(--border);">ない-form</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">しない</td>
+        <td style="padding: 10px; border: 1px solid var(--border);">こない</td>
+      </tr>
+    </table>
+
+    <div class="exemplo">
+      <h4>Frases Completas:</h4>
+      <p>わたしは にほんごを べんきょうしたいです。 (Quero estudar japonês.)</p>
+      <p>きのう ともだちと えいがを みに いきました。 (Ontem fui assistir filme com amigos.)</p>
+      <p>りょこうを したいですが、じかんが ありません。 (Quero viajar, mas não tenho tempo.)</p>
+    </div>
+  </section>
+
+  <!-- Próximos conteúdos -->
+  <section class="future-cards">
+    <div class="container">
+      <h3>Próximos Conteúdos</h3>
+      <div class="grid-cards">
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Adjetivos</h3>
+            <p class="card-desc">い-adjetivos, な-adjetivos, 好き, 嫌い</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Partículas</h3>
+            <p class="card-desc">は, が, を, に, で, も, の</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <h3 class="card-title">Expressões de Tempo</h3>
+            <p class="card-desc">時間, 分, 日, 週, 月</p>
+            <a href="#" class="btn-acessar">Em breve</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 MEXT STUDY — Caminho do Guerreiro<br>
+      Inspirado no <em>Bushido</em>. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Áudio de fundo
+    const audio = document.getElementById("background-audio");
+    let audioOn = false;
+
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      audioOn = !audioOn;
+      const btn = document.getElementById("audioBtn");
+
+      if (audioOn) {
+        audio.play().catch(e => console.log("Reprodução automática bloqueada:", e));
+        btn.textContent = "🔊";
+      } else {
+        audio.pause();
+        btn.textContent = "⏸️";
+      }
+    });
+  </script>
+</body>
+</html>
