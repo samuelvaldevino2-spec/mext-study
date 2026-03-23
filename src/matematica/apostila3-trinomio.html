@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatoração de Trinômio (a ≠ 1)</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #09090b;
+            --bg-card: #18181b;
+            --bg-card-hover: #27272a;
+            --border: #3f3f46;
+            --primary: #8b5cf6; /* Roxo Vibrante */
+            --primary-glow: rgba(139, 92, 246, 0.3);
+            --accent: #3b82f6; /* Azul */
+            --success: #10b981;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --radius: 16px;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #fff, #c4b5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary); padding-left: 1rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
+        p { margin-bottom: 1.2rem; color: #d4d4d8; font-size: 1.05rem; }
+        
+        blockquote {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #fff;
+        }
+
+        .highlight { color: var(--primary); font-weight: 600; }
+        .math-text { font-family: var(--font-mono); color: var(--primary); background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+
+        /* Layout */
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px -10px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .hero { text-align: center; padding: 4rem 0; margin-bottom: 2rem; }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* --- INTERACTIVE STEP WIZARD --- */
+        .wizard-container {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .step-content.active { display: block; }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+        .step-dot {
+            width: 30px;
+            height: 30px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 1;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+        .step-dot.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .wizard-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        .btn-wizard {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-wizard:hover { background: #7c3aed; }
+        .btn-wizard:disabled { background: var(--border); cursor: not-allowed; opacity: 0.5; }
+
+        /* --- ANIMATIONS --- */
+        .split-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            margin: 2rem 0;
+        }
+        .split-part {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+        .split-part.show { opacity: 1; transform: translateY(0); }
+        .split-arrow { color: var(--text-muted); }
+
+        /* --- GROUPING VISUAL --- */
+        .group-box {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        .group-1 { background: rgba(59, 130, 246, 0.1); border-color: var(--accent); color: var(--accent); }
+        .group-2 { background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success); }
+
+        /* --- EXERCISES --- */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .ex-card {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .ex-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+        }
+        .ex-input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        .ex-input.correct { border-color: var(--success); color: var(--success); }
+        .ex-input.wrong { border-color: #ef4444; color: #ef4444; }
+
+        .btn-check {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        /* --- FEYNMAN FLIP --- */
+        .flip-container {
+            perspective: 1000px;
+            height: 250px;
+            cursor: pointer;
+            margin: 2rem 0;
+        }
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .flip-front { background: linear-gradient(145deg, var(--bg-card), #202023); }
+        .flip-back { background: linear-gradient(145deg, #202023, var(--bg-card)); transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* --- UTILS --- */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .katex-display { overflow-x: auto; overflow-y: hidden; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <header class="hero fade-in">
+            <span class="hero-badge">Apostila Avançada</span>
+            <h1>Fatoração de Trinômio do 2º Grau</h1>
+            <p style="color: var(--text-muted);">Quando a ≠ 1</p>
+        </header>
+
+        <!-- 1. O PROBLEMA -->
+        <section class="card fade-in">
+            <h2>🧠 1. O PROBLEMA QUE ESTAMOS RESOLVENDO</h2>
+            <p>Queremos fatorar expressões do tipo:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1.5rem 0;">
+                $$ ax^2 + bx + c $$
+            </div>
+            <p>onde:</p>
+            <ul>
+                <li>$$ a \neq 1 $$</li>
+            </ul>
+
+            <div style="background: rgba(139, 92, 246, 0.1); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin: 1.5rem 0;">
+                <h4>📌 Exemplo típico:</h4>
+                <div style="text-align: center; font-size: 1.5rem; margin-top: 1rem;">
+                    $$ 2x^2 + 7x + 3 $$
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. OBJETIVO -->
+        <section class="card fade-in">
+            <h2>🎯 2. OBJETIVO FINAL</h2>
+            <p>Transformar isso em:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1.5rem 0; color: var(--success);">
+                $$ (ax + m)(cx + n) $$
+            </div>
+            <p>ou alguma variação equivalente.</p>
+        </section>
+
+        <!-- 3. IDEIA CENTRAL -->
+        <section class="card fade-in" style="border-color: var(--accent);">
+            <h2>🔥 3. IDEIA CENTRAL (INTUIÇÃO REAL)</h2>
+            <p>Você não consegue fatorar direto.</p>
+            <p>Então você faz algo inteligente:</p>
+            <blockquote>
+                👉 <strong>quebra o termo do meio em duas partes</strong>
+            </blockquote>
+            <p>Para depois conseguir fatorar por agrupamento.</p>
+        </section>
+
+        <!-- 4. OS 6 PASSOS (WIZARD INTERATIVO) -->
+        <section class="card fade-in">
+            <h2>⚙️ 4. OS 6 PASSOS COMPLETOS</h2>
+            <p>Agora vem o método. Sem pular nada.</p>
+
+            <div class="wizard-container">
+                <div class="step-indicator">
+                    <div class="step-dot active">1</div>
+                    <div class="step-dot">2</div>
+                    <div class="step-dot">3</div>
+                    <div class="step-dot">4</div>
+                    <div class="step-dot">5</div>
+                    <div class="step-dot">6</div>
+                </div>
+
+                <!-- Passo 1 -->
+                <div class="step-content active" id="step-1">
+                    <h3>✅ PASSO 1 — Identificar os coeficientes</h3>
+                    <p>Dado:</p>
+                    <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                        $$ 2x^2 + 7x + 3 $$
+                    </div>
+                    <p>Temos:</p>
+                    <ul>
+                        <li>$$ a = 2 $$</li>
+                        <li>$$ b = 7 $$</li>
+                        <li>$$ c = 3 $$</li>
+                    </ul>
+                </div>
+
+                <!-- Passo 2 -->
+                <div class="step-content" id="step-2">
+                    <h3>✅ PASSO 2 — Multiplicar $$ a \cdot c $$</h3>
+                    <div style="text-align: center; font-size: 2rem; margin: 2rem 0; color: var(--primary);">
+                        $$ 2 \cdot 3 = 6 $$
+                    </div>
+                    <p>Esse número (6) será nosso alvo para o produto.</p>
+                </div>
+
+                <!-- Passo 3 -->
+                <div class="step-content" id="step-3">
+                    <h3>✅ PASSO 3 — Encontrar dois números</h3>
+                    <p>Você precisa de dois números que:</p>
+                    <ul>
+                        <li>multiplicam → 6</li>
+                        <li>somam → 7 (o valor de b)</li>
+                    </ul>
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <h4>🔎 Testando:</h4>
+                        <p>1 e 6 → soma 7 ✅</p>
+                    </div>
+                </div>
+
+                <!-- Passo 4 -->
+                <div class="step-content" id="step-4">
+                    <h3>✅ PASSO 4 — Quebrar o termo do meio</h3>
+                    <p>Substitua:</p>
+                    <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                        $$ 7x = x + 6x $$
+                    </div>
+                    <p>Então:</p>
+                    <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                        $$ 2x^2 + 7x + 3 $$
+                    </div>
+                    <p>vira:</p>
+                    
+                    <div class="split-animation">
+                        <span>$$ 2x^2 $$</span>
+                        <span>+</span>
+                        <span class="split-part group-1" style="transition-delay: 0.2s">$$ x $$</span>
+                        <span class="split-arrow" style="transition-delay: 0.4s">+</span>
+                        <span class="split-part group-2" style="transition-delay: 0.6s">$$ 6x $$</span>
+                        <span>+</span>
+                        <span>$$ 3 $$</span>
+                    </div>
+                    <button class="btn-wizard" style="width: 100%; margin-top: 1rem;" onclick="triggerSplit()">Ver Decomposição</button>
+                </div>
+
+                <!-- Passo 5 -->
+                <div class="step-content" id="step-5">
+                    <h3>✅ PASSO 5 — Agrupar</h3>
+                    <div style="text-align: center; font-size: 1.3rem; margin: 1rem 0;">
+                        <span class="group-box group-1">$$(2x^2 + x)$$</span> + <span class="group-box group-2">$$(6x + 3)$$</span>
+                    </div>
+                    <p>Agora fatoramos cada grupo:</p>
+                    <div style="display: flex; justify-content: space-around; margin-top: 1rem; flex-wrap: wrap; gap: 1rem;">
+                        <div class="group-box group-1">
+                            $$ 2x^2 + x = x(2x + 1) $$
+                        </div>
+                        <div class="group-box group-2">
+                            $$ 6x + 3 = 3(2x + 1) $$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passo 6 -->
+                <div class="step-content" id="step-6">
+                    <h3>✅ PASSO 6 — Colocar fator comum em evidência</h3>
+                    <p>Agora aparece algo comum:</p>
+                    <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0; color: var(--success);">
+                        $$ (2x + 1) $$
+                    </div>
+                    <p>Então:</p>
+                    <div style="text-align: center; font-size: 1.3rem; margin: 1rem 0;">
+                        $$ x(2x + 1) + 3(2x + 1) $$
+                    </div>
+                    <p>Fatorando:</p>
+                    <div style="text-align: center; font-size: 1.8rem; margin: 1rem 0; font-weight: bold; color: var(--primary);">
+                        $$ (2x + 1)(x + 3) $$
+                    </div>
+                </div>
+
+                <div class="wizard-controls">
+                    <button class="btn-wizard" id="prevBtn" onclick="changeStep(-1)" disabled>Anterior</button>
+                    <button class="btn-wizard" id="nextBtn" onclick="changeStep(1)">Próximo Passo →</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <h3>✅ RESULTADO FINAL</h3>
+                <div style="font-size: 1.5rem;">
+                    $$ 2x^2 + 7x + 3 = (2x + 1)(x + 3) $$
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. POR QUE FUNCIONA -->
+        <section class="card fade-in">
+            <h2>🧠 5. POR QUE ESSE MÉTODO FUNCIONA?</h2>
+            <p>Porque você:</p>
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li>Transformou um trinômio em 4 termos</li>
+                <li>Criou dois grupos fatoráveis</li>
+                <li>Gerou um fator comum entre eles</li>
+            </ol>
+            <p style="margin-top: 1rem;">👉 Isso permite reconstruir a multiplicação original.</p>
+        </section>
+
+        <!-- 6. ERROS COMUNS -->
+        <section class="card fade-in" style="border-color: #ef4444;">
+            <h2 style="color: #ef4444; border-left-color: #ef4444;">⚠️ 6. ERROS MAIS COMUNS</h2>
+            <ul>
+                <li>Errar os números do passo 3</li>
+                <li>Esquecer de verificar soma e produto</li>
+                <li>Parar antes de agrupar</li>
+                <li>Não conferir expandindo</li>
+            </ul>
+        </section>
+
+        <!-- 7. EXEMPLOS RESOLVIDOS -->
+        <section class="card fade-in">
+            <h2>🧪 7. EXEMPLOS RESOLVIDOS</h2>
+            
+            <div style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h3>🔹 Exemplo 1</h3>
+                <div style="text-align: center; font-size: 1.3rem; margin: 1rem 0;">
+                    $$ 3x^2 + 11x + 6 $$
+                </div>
+                
+                <p><strong>Passo 1:</strong> $$ a = 3 $$, $$ b = 11 $$, $$ c = 6 $$</p>
+                <p><strong>Passo 2:</strong> $$ 3 \cdot 6 = 18 $$</p>
+                <p><strong>Passo 3:</strong> Números que multiplicam 18 e somam 11: 👉 2 e 9</p>
+                
+                <div style="border-top: 1px solid var(--border); margin: 1rem 0; padding-top: 1rem;">
+                    <p><strong>Passo 4:</strong></p>
+                    <div style="text-align: center;">$$ 3x^2 + 2x + 9x + 6 $$</div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); margin: 1rem 0; padding-top: 1rem;">
+                    <p><strong>Passo 5:</strong></p>
+                    <div style="text-align: center;">$$ (3x^2 + 2x) + (9x + 6) $$</div>
+                    <div style="text-align: center; margin-top: 0.5rem;">$$ = x(3x + 2) + 3(3x + 2) $$</div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); margin: 1rem 0; padding-top: 1rem;">
+                    <p><strong>Passo 6:</strong></p>
+                    <div style="text-align: center; font-size: 1.3rem; color: var(--success);">$$ (3x + 2)(x + 3) $$</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. COMO SABER QUE FUNCIONOU -->
+        <section class="card fade-in">
+            <h2>🧠 8. COMO SABER QUE FUNCIONOU?</h2>
+            <p>Sempre faça isso:</p>
+            <blockquote>👉 Expanda o resultado</blockquote>
+            <p>Se voltar ao original → está correto</p>
+        </section>
+
+        <!-- 9. EXERCÍCIOS -->
+        <section class="card fade-in">
+            <h2>🧪 9. EXERCÍCIOS</h2>
+            
+            <h3>🔹 Nível 1</h3>
+            <div class="exercise-grid">
+                <div class="ex-card">
+                    <p>1. $$ 2x^2 + 5x + 2 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+m)(cx+n)" data-ans="(2x+1)(x+2)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+                <div class="ex-card">
+                    <p>2. $$ 3x^2 + 10x + 8 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+m)(cx+n)" data-ans="(3x+4)(x+2)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">🔹 Nível 2 (MEXT)</h3>
+            <div class="exercise-grid">
+                <div class="ex-card">
+                    <p>1. $$ 4x^2 + 11x + 6 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+m)(cx+n)" data-ans="(4x+3)(x+2)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+                <div class="ex-card">
+                    <p>2. $$ 6x^2 + 11x + 3 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+m)(cx+n)" data-ans="(3x+1)(2x+3)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">🔹 Nível 3 (Desafio)</h3>
+            <div class="exercise-grid">
+                <div class="ex-card" style="border-color: var(--primary);">
+                    <p>1. $$ 8x^2 + 14x + 3 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+m)(cx+n)" data-ans="(4x+1)(2x+3)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. DESAFIO FEYNMAN -->
+        <section class="card fade-in">
+            <h2>🧠 10. DESAFIO FEYNMAN</h2>
+            <p>Explique com suas palavras:</p>
+            <p>👉 Por que precisamos multiplicar $$ a \cdot c $$ no passo 2?</p>
+            <p>Se você não souber responder, você ainda está executando — não entendendo.</p>
+
+            <div class="flip-container" onclick="this.classList.toggle('flipped')">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <h3>Clique para ver a explicação</h3>
+                        <p style="margin-top: 1rem; color: var(--text-muted);">(Flip Card)</p>
+                    </div>
+                    <div class="flip-back">
+                        <h3 style="color: var(--primary);">Explicação:</h3>
+                        <p>Ao multiplicar $$ a \cdot c $$, estamos encontrando o produto dos termos internos da fatoração final.</p>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">Isso garante que, ao distribuir, o termo constante $$ c $$ e o coeficiente líder $$ a $$ se encaixem perfeitamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. RESUMO DE COMBATE -->
+        <section class="card fade-in" style="border-color: var(--success);">
+            <h2 style="color: var(--success); border-left-color: var(--success);">⚔️ 11. RESUMO DE COMBATE</h2>
+            <ul style="list-style: none; margin-top: 1rem; font-size: 1.1rem; line-height: 2;">
+                <li>✅ Multiplica $$ a \cdot c $$</li>
+                <li>✅ Acha dois números</li>
+                <li>✅ Quebra o termo do meio</li>
+                <li>✅ Agrupa</li>
+                <li>✅ Fatora</li>
+                <li>✅ Junta tudo</li>
+            </ul>
+        </section>
+
+        <!-- MISSÃO -->
+        <section class="fade-in" style="text-align: center; margin-bottom: 4rem; padding: 3rem; background: linear-gradient(145deg, #18181b, #09090b); border-radius: 16px; border: 1px solid var(--border);">
+            <h2 style="border: none; padding: 0; margin: 0; font-size: 2rem;">🚀 MISSÃO</h2>
+            <p style="font-size: 1.2rem; margin-top: 1.5rem; color: #fff;">
+                Agora faça:
+            </p>
+            <div style="font-size: 2rem; margin: 1.5rem 0; color: var(--primary); font-family: var(--font-mono);">
+                $$ 6x^2 + 11x + 3 $$
+            </div>
+            <p>E me mostre <strong>todos os passos</strong>.</p>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Se você errar, ótimo — é aí que a gente ajusta e te deixa forte nisso.</p>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 1. Inicializar KaTeX ---
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError : false
+            });
+
+            // Observer para animações de entrada
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+
+        // --- 2. Wizard Logic ---
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        function changeStep(direction) {
+            // Hide current
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.querySelectorAll('.step-dot')[currentStep-1].classList.remove('active');
+
+            // Update index
+            currentStep += direction;
+
+            // Show new
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.querySelectorAll('.step-dot')[currentStep-1].classList.add('active');
+
+            // Button states
+            document.getElementById('prevBtn').disabled = (currentStep === 1);
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStep === totalSteps) {
+                nextBtn.textContent = "Concluir";
+                nextBtn.disabled = true;
+                nextBtn.style.background = "var(--success)";
+            } else {
+                nextBtn.textContent = "Próximo Passo →";
+                nextBtn.disabled = false;
+                nextBtn.style.background = "var(--primary)";
+            }
+
+            // Reset split animation if going back to step 4
+            if (currentStep === 4) {
+                document.querySelectorAll('.split-part').forEach(el => el.classList.remove('show'));
+                document.querySelector('.split-arrow').style.opacity = 0;
+            }
+        }
+
+        function triggerSplit() {
+            document.querySelectorAll('.split-part').forEach(el => el.classList.add('show'));
+            document.querySelector('.split-arrow').style.opacity = 1;
+        }
+
+        // --- 3. Exercise Checker ---
+        function checkEx(btn) {
+            const input = btn.previousElementSibling;
+            const userVal = input.value.replace(/\s/g, '').toLowerCase();
+            const correctVal = input.getAttribute('data-ans').replace(/\s/g, '').toLowerCase();
+            
+            // Allow order swap for factors like (x+2)(2x+1) vs (2x+1)(x+2)
+            let isCorrect = false;
+            if (userVal === correctVal) isCorrect = true;
+            
+            // Simple swap check for 2 factors
+            const parts = correctVal.split(')(');
+            if (parts.length === 2) {
+                const swapped = parts[1].replace('(', '') + ')(' + parts[0].replace(')', '');
+                if (userVal === swapped) isCorrect = true;
+            }
+
+            if (isCorrect) {
+                input.classList.add('correct');
+                input.classList.remove('wrong');
+                btn.textContent = "Correto! ✅";
+                btn.style.background = "var(--success)";
+            } else {
+                input.classList.add('wrong');
+                input.classList.remove('correct');
+                btn.textContent = "Tente novamente ❌";
+                btn.style.background = "#ef4444";
+            }
+        }
+    </script>
+</body>
+</html>
