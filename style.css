@@ -1,0 +1,164 @@
+:root {
+    --bg-dark: #09090b;
+    --bg-card: #18181b;
+    --text-main: #fafafa;
+    --text-muted: #a1a1aa;
+    --border: #27272a;
+    
+    /* Cores das Disciplinas */
+    --math-color: #3b82f6;      /* Azul */
+    --phys-color: #ef4444;      /* Vermelho */
+    --chem-color: #10b981;      /* Verde */
+    --bio-color: #14b8a6;       /* Teal */
+    --eng-color: #f59e0b;       /* Amarelo */
+    --jpn-color: #ec4899;       /* Rosa */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* --- NAVIGATION --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(9, 9, 11, 0.9);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; }
+.logo span { color: var(--math-color); }
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-left: 2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+
+/* --- HERO SECTION --- */
+.hero {
+    text-align: center;
+    padding: 6rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero p { color: var(--text-muted); font-size: 1.2rem; }
+
+/* --- SUBJECT GRID --- */
+.container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.subject-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 250px;
+}
+
+.subject-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+}
+
+/* Cores Específicas */
+.subject-card.math { border-top: 4px solid var(--math-color); }
+.subject-card.math:hover { box-shadow: 0 0 30px -10px var(--math-color); }
+
+.subject-card.phys { border-top: 4px solid var(--phys-color); }
+.subject-card.phys:hover { box-shadow: 0 0 30px -10px var(--phys-color); }
+
+.subject-card.chem { border-top: 4px solid var(--chem-color); }
+.subject-card.chem:hover { box-shadow: 0 0 30px -10px var(--chem-color); }
+
+.subject-card.bio { border-top: 4px solid var(--bio-color); }
+.subject-card.bio:hover { box-shadow: 0 0 30px -10px var(--bio-color); }
+
+.subject-card.eng { border-top: 4px solid var(--eng-color); }
+.subject-card.eng:hover { box-shadow: 0 0 30px -10px var(--eng-color); }
+
+.subject-card.jpn { border-top: 4px solid var(--jpn-color); }
+.subject-card.jpn:hover { box-shadow: 0 0 30px -10px var(--jpn-color); }
+
+.card-icon { font-size: 3rem; margin-bottom: 1rem; }
+.card-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.card-desc { color: var(--text-muted); font-size: 0.95rem; }
+
+/* --- APOSTILA LIST (Subject Page) --- */
+.apostila-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.apostila-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s;
+}
+
+.apostila-item:hover { border-color: var(--text-muted); }
+
+.apostila-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.apostila-info p { color: var(--text-muted); font-size: 0.9rem; }
+
+.btn-start {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.btn-start:hover { background: var(--text-main); color: var(--bg-dark); }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    .navbar { flex-direction: column; gap: 1rem; }
+    .nav-links a { margin: 0 1rem; }
+    .apostila-item { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .btn-start { width: 100%; text-align: center; }
+}
