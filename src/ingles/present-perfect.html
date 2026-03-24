@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Present Perfect: Função Comunicativa — Inglês MEXT</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-body: #09090b;
+            --bg-card: #18181b;
+            --bg-card-hover: #27272a;
+            --border: #3f3f46;
+            --eng-color: #f59e0b; /* Amarelo/Dourado */
+            --eng-glow: rgba(245, 158, 11, 0.3);
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --radius: 16px;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.7;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #fff, #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--eng-color); padding-left: 1rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 1rem; color: var(--eng-color); }
+        p { margin-bottom: 1.2rem; color: #d4d4d8; font-size: 1.05rem; }
+        
+        blockquote {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--eng-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #fff;
+        }
+
+        .en-text { font-family: var(--font-mono); color: var(--eng-color); background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+
+        /* Layout */
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .back-link:hover { color: var(--eng-color); }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover { border-color: var(--eng-color); box-shadow: 0 10px 40px -10px var(--eng-glow); }
+
+        .hero { text-align: center; padding: 4rem 0; margin-bottom: 2rem; }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 100px;
+            color: var(--eng-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* --- INTERACTIVE COMPONENTS --- */
+
+        /* Connection Visual */
+        .connection-visual {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3rem 0;
+            position: relative;
+        }
+        .time-point {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg-card-hover);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .time-point.active {
+            border-color: var(--eng-color);
+            box-shadow: 0 0 20px var(--eng-glow);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .connection-line {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            right: 100px;
+            height: 4px;
+            background: var(--border);
+            z-index: 1;
+            transform: translateY(-50%);
+            overflow: hidden;
+        }
+        .connection-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--eng-color);
+            transition: width 1s ease-in-out;
+        }
+
+        /* Life Checklist */
+        .life-checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .check-item {
+            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .check-item:hover { background: rgba(255,255,255,0.05); }
+        .check-item.checked {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+        }
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+        }
+        .check-item.checked .check-icon {
+            background: var(--success);
+            border-color: var(--success);
+            color: #fff;
+        }
+
+        /* News Feed */
+        .news-feed {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .news-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .news-item:hover { background: rgba(245, 158, 11, 0.05); }
+        .news-badge {
+            background: var(--eng-color);
+            color: #000;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .news-detail {
+            max-height: 0;
+            overflow: hidden;
+            background: rgba(255,255,255,0.03);
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+        .news-detail.show {
+            max-height: 200px;
+            padding: 1.5rem;
+        }
+
+        /* Result Cards */
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .result-card {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .result-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .result-text { font-family: var(--font-mono); color: var(--text-muted); }
+        .result-reveal {
+            margin-top: 1rem;
+            color: var(--eng-color);
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+        }
+        .result-card:hover .result-reveal { opacity: 1; transform: translateY(0); }
+
+        /* Duration Slider */
+        .duration-slider-container {
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.3);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        .slider-track {
+            position: relative;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin: 2rem 0;
+        }
+        .slider-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--eng-color);
+            border-radius: 3px;
+            width: 50%;
+            transition: width 0.1s;
+        }
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            left: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .duration-labels {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .toggle-label { font-weight: 600; color: var(--text-muted); }
+        .toggle-label.active { color: var(--eng-color); }
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--border);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .toggle-switch.active { background: var(--eng-color); }
+        .toggle-switch.active::after { transform: translateX(30px); }
+
+        /* Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--eng-color);
+        }
+        .summary-item h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .summary-item p { font-size: 1.1rem; font-weight: 600; color: #fff; margin: 0; }
+
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="ingles.html" class="back-link">← Back to English</a>
+
+        <header class="hero fade-in">
+            <span class="hero-badge">Communicative Function</span>
+            <h1>📘 PRESENT PERFECT</h1>
+            <p style="color: var(--text-muted);">Não é sobre QUANDO aconteceu. É sobre o impacto AGORA.</p>
+        </header>
+
+        <!-- 1. IDEIA CENTRAL -->
+        <section class="card fade-in">
+            <h2>📌 1. IDEIA CENTRAL</h2>
+            <p>O Present Perfect conecta:</p>
+            
+            <div class="connection-visual">
+                <div class="time-point" id="point-past">PASSADO<br><span style="font-size:0.7rem; color:var(--text-muted)">Ação</span></div>
+                <div class="connection-line">
+                    <div class="connection-flow" id="flow-line"></div>
+                </div>
+                <div class="time-point" id="point-present">PRESENTE<br><span style="font-size:0.7rem; color:var(--text-muted)">Impacto</span></div>
+            </div>
+
+            <p style="text-align: center; margin-top: 1rem;">👉 Ele não informa <em>quando</em> algo aconteceu, mas sim:</p>
+            <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <span class="en-text">o impacto agora</span>
+                <span class="en-text">a experiência acumulada</span>
+                <span class="en-text">a continuidade</span>
+            </div>
+
+            <button class="btn-action" style="width: 100%; margin-top: 2rem;" onclick="animateConnection()">Ver Conexão</button>
+        </section>
+
+        <!-- 2. FALAR SOBRE EXPERIÊNCIAS -->
+        <section class="card fade-in">
+            <h2>📌 2. FALAR SOBRE EXPERIÊNCIAS</h2>
+            <p>Usado para compartilhar vivências de vida. Não importa quando, importa SE aconteceu.</p>
+            
+            <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: var(--font-mono);">
+                Padrões:<br>
+                • Have you ever + particípio?<br>
+                • I have + particípio
+            </div>
+
+            <h3>🎯 Life Checklist (Interactive)</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Clique nas experiências que você já teve:</p>
+            
+            <div class="life-checklist">
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="check-icon">✓</div>
+                    <span>Travel alone</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="check-icon">✓</div>
+                    <span>Visit Japan</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="check-icon">✓</div>
+                    <span>Eat Sushi</span>
+                </div>
+                <div class="check-item" onclick="toggleCheck(this)">
+                    <div class="check-icon">✓</div>
+                    <span>Break a bone</span>
+                </div>
+            </div>
+
+            <div id="experience-feedback" style="margin-top: 1rem; font-weight: bold; color: var(--eng-color); min-height: 1.5em;"></div>
+        </section>
+
+        <!-- 3. FALAR SOBRE MUDANÇAS -->
+        <section class="card fade-in">
+            <h2>📌 3. FALAR SOBRE MUDANÇAS</h2>
+            <p>Descreve transformações ao longo do tempo.</p>
+
+            <div style="display: flex; gap: 2rem; align-items: center; margin: 2rem 0; flex-wrap: wrap;">
+                <div style="flex: 1; text-align: center; opacity: 0.5;">
+                    <div style="font-size: 3rem;">📉</div>
+                    <p>Before</p>
+                    <p style="font-family: var(--font-mono); font-size: 0.9rem;">My English was bad</p>
+                </div>
+                <div style="font-size: 2rem; color: var(--eng-color);">➜</div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 3rem;">📈</div>
+                    <p style="color: var(--eng-color); font-weight: bold;">Now</p>
+                    <p style="font-family: var(--font-mono); font-size: 0.9rem;">My English <strong>has improved</strong></p>
+                </div>
+            </div>
+
+            <blockquote>Ex: This city has changed a lot.</blockquote>
+        </section>
+
+        <!-- 4. DAR NOTÍCIAS -->
+        <section class="card fade-in">
+            <h2>📌 4. DAR NOTÍCIAS / INFORMAÇÕES RECENTES</h2>
+            <p>Usado para comunicar algo que acabou de acontecer ou é relevante agora.</p>
+
+            <div class="news-feed">
+                <div class="news-item" onclick="toggleNews(this)">
+                    <div>
+                        <span class="news-badge">BREAKING</span>
+                        <span style="margin-left: 1rem; font-weight: 600;">I have just finished my homework</span>
+                    </div>
+                    <span>▼</span>
+                </div>
+                <div class="news-detail">
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Contexto: A ação acabou de terminar. O resultado é que agora estou livre.</p>
+                </div>
+
+                <div class="news-item" onclick="toggleNews(this)">
+                    <div>
+                        <span class="news-badge">UPDATE</span>
+                        <span style="margin-left: 1rem; font-weight: 600;">She has already left</span>
+                    </div>
+                    <span>▼</span>
+                </div>
+                <div class="news-detail">
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Contexto: Ela não está mais aqui. A notícia é relevante para quem está procurando por ela.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. RESULTADOS NO PRESENTE -->
+        <section class="card fade-in">
+            <h2>📌 5. FALAR DE RESULTADOS NO PRESENTE</h2>
+            <p>A ação aconteceu no passado, mas o efeito continua visível agora.</p>
+
+            <div class="result-grid">
+                <div class="result-card">
+                    <span class="result-emoji">📱</span>
+                    <div class="result-text">Ação: Perder o celular</div>
+                    <div class="result-reveal">I have lost my phone<br><span style="font-size:0.8rem; font-weight:400; color:var(--text-muted)">(ainda estou sem ele)</span></div>
+                </div>
+                <div class="result-card">
+                    <span class="result-emoji">🦾</span>
+                    <div class="result-text">Ação: Quebrar o braço</div>
+                    <div class="result-reveal">She has broken her arm<br><span style="font-size:0.8rem; font-weight:400; color:var(--text-muted)">(ela está com gesso)</span></div>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted);">💡 Passe o mouse (ou toque) para revelar a frase.</p>
+        </section>
+
+        <!-- 6. DURAÇÃO -->
+        <section class="card fade-in">
+            <h2>📌 6. FALAR DE DURAÇÃO (ATÉ AGORA)</h2>
+            <p>Ações que começaram no passado e continuam.</p>
+
+            <div class="duration-slider-container">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                    <span style="color: var(--eng-color); font-weight: bold;">FOR (Duração)</span>
+                    <span style="color: var(--success); font-weight: bold;">SINCE (Início)</span>
+                </div>
+                
+                <input type="range" min="0" max="100" value="50" class="slider-track" id="duration-slider" oninput="updateDuration()">
+                <div class="slider-fill" id="duration-fill" style="width: 50%;"></div>
+                <div class="slider-handle" id="duration-handle" style="left: 50%;"></div>
+
+                <div class="duration-labels">
+                    <span id="label-start">2021 (Since)</span>
+                    <span id="label-end">Now</span>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem; font-family: var(--font-mono); font-size: 1.2rem;">
+                    <span id="sentence-display" style="color: var(--eng-color);">She has worked here since 2021</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7 & 8. PERGUNTAS E FREQUÊNCIA -->
+        <section class="card fade-in">
+            <h2>📌 7 & 8. PERGUNTAS E FREQUÊNCIA</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h4 style="color: var(--eng-color);">Iniciar Conversas</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Usado para quebrar o gelo.</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 1rem; line-height: 2;">
+                        <li>Have you ever tried sushi?</li>
+                        <li>Have you ever lived abroad?</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: var(--eng-color);">Frequência Indefinida</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Quantas vezes na vida (sem data).</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 1rem; line-height: 2;">
+                        <li>I have traveled many times</li>
+                        <li>She has visited me several times</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. CONTRASTE -->
+        <section class="card fade-in">
+            <h2>📌 9. CONTRASTE COM PAST SIMPLE (FUNÇÃO)</h2>
+            
+            <div class="toggle-switch-container">
+                <span class="toggle-label" id="label-perfect" style="color: var(--eng-color);">Present Perfect</span>
+                <div class="toggle-switch active" onclick="toggleContrast()"></div>
+                <span class="toggle-label" id="label-simple">Past Simple</span>
+            </div>
+
+            <div id="contrast-content" style="background: rgba(245, 158, 11, 0.1); padding: 2rem; border-radius: 12px; text-align: center; transition: all 0.3s;">
+                <h3 style="margin: 0;">Experiência / Conexão com o presente</h3>
+                <div style="font-size: 1.5rem; font-family: var(--font-mono); margin-top: 1rem;">
+                    "I have visited Japan"
+                </div>
+                <p style="margin-top: 1rem; color: var(--text-muted);">Foco: Tenho essa experiência na minha vida.</p>
+            </div>
+        </section>
+
+        <!-- 10. PADRÕES PRONTOS -->
+        <section class="card fade-in">
+            <h2>📌 10. PADRÕES COMUNICATIVOS PRONTOS</h2>
+            <p>Copie e cole na sua mente:</p>
+            <div style="display: grid; gap: 0.5rem; font-family: var(--font-mono);">
+                <div style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 6px;">• Have you ever + particípio?</div>
+                <div style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 6px;">• I have never + particípio</div>
+                <div style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 6px;">• I have just + particípio</div>
+                <div style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 6px;">• I have already + particípio</div>
+                <div style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 6px;">• I have + particípio + for/since</div>
+            </div>
+        </section>
+
+        <!-- 11. RESUMO FINAL -->
+        <section class="card fade-in" style="border-color: var(--eng-color);">
+            <h2 style="border: none; padding: 0; margin-bottom: 1.5rem;">📌 11. RESUMO FINAL</h2>
+            
+            <p>O Present Perfect é usado para:</p>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h4>Experiências</h4>
+                    <p>Vida inteira</p>
+                </div>
+                <div class="summary-item">
+                    <h4>Mudanças</h4>
+                    <p>Transformações</p>
+                </div>
+                <div class="summary-item">
+                    <h4>Notícias</h4>
+                    <p>Recentes</p>
+                </div>
+                <div class="summary-item">
+                    <h4>Resultados</h4>
+                    <p>Atuais</p>
+                </div>
+                <div class="summary-item">
+                    <h4>Duração</h4>
+                    <p>Até o presente</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center; padding: 2rem; background: linear-gradient(145deg, #18181b, #09090b); border-radius: 16px; border: 1px solid var(--border);">
+                <p style="font-size: 1.2rem; color: var(--text-muted);">👉 Ele não fala sobre <em>quando</em></p>
+                <p style="font-size: 1.5rem; font-weight: 800; color: var(--eng-color); margin-top: 0.5rem;">👉 Ele fala sobre o que isso significa AGORA</p>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- Fade-in Animation ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+
+        // --- Connection Animation ---
+        function animateConnection() {
+            const flow = document.getElementById('flow-line');
+            const past = document.getElementById('point-past');
+            const present = document.getElementById('point-present');
+
+            flow.style.width = '0%';
+            past.classList.remove('active');
+            present.classList.remove('active');
+
+            setTimeout(() => {
+                past.classList.add('active');
+                flow.style.width = '100%';
+            }, 500);
+
+            setTimeout(() => {
+                present.classList.add('active');
+            }, 1500);
+        }
+
+        // --- Life Checklist ---
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+            const checkedCount = document.querySelectorAll('.check-item.checked').length;
+            const feedback = document.getElementById('experience-feedback');
+            
+            if (checkedCount > 0) {
+                feedback.textContent = `✅ I have done ${checkedCount} thing(s)!`;
+            } else {
+                feedback.textContent = '';
+            }
+        }
+
+        // --- News Toggle ---
+        function toggleNews(el) {
+            const detail = el.nextElementSibling;
+            const arrow = el.querySelector('span:last-child');
+            
+            detail.classList.toggle('show');
+            arrow.textContent = detail.classList.contains('show') ? '▲' : '▼';
+        }
+
+        // --- Duration Slider ---
+        function updateDuration() {
+            const slider = document.getElementById('duration-slider');
+            const fill = document.getElementById('duration-fill');
+            const handle = document.getElementById('duration-handle');
+            const sentence = document.getElementById('sentence-display');
+            const labelStart = document.getElementById('label-start');
+
+            const val = slider.value;
+            
+            fill.style.width = val + '%';
+            handle.style.left = val + '%';
+
+            if (val < 50) {
+                // Mode: Since
+                const year = 2021 + Math.floor((50 - val) / 5);
+                labelStart.textContent = `${year} (Since)`;
+                labelStart.style.color = 'var(--success)';
+                sentence.textContent = `She has worked here since ${year}`;
+                sentence.style.color = 'var(--success)';
+            } else {
+                // Mode: For
+                const years = Math.floor((val - 50) / 10);
+                labelStart.textContent = `${years} years (For)`;
+                labelStart.style.color = 'var(--eng-color)';
+                sentence.textContent = `She has worked here for ${years} years`;
+                sentence.style.color = 'var(--eng-color)';
+            }
+        }
+
+        // --- Contrast Toggle ---
+        let isPerfect = true;
+        function toggleContrast() {
+            const toggle = document.querySelector('.toggle-switch');
+            const content = document.getElementById('contrast-content');
+            const labelPerfect = document.getElementById('label-perfect');
+            const labelSimple = document.getElementById('label-simple');
+
+            isPerfect = !isPerfect;
+
+            if (isPerfect) {
+                toggle.classList.add('active');
+                labelPerfect.style.color = 'var(--eng-color)';
+                labelSimple.style.color = 'var(--text-muted)';
+                
+                content.style.background = 'rgba(245, 158, 11, 0.1)';
+                content.innerHTML = `
+                    <h3 style="margin: 0;">Experiência / Conexão com o presente</h3>
+                    <div style="font-size: 1.5rem; font-family: var(--font-mono); margin-top: 1rem;">"I have visited Japan"</div>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">Foco: Tenho essa experiência na minha vida.</p>
+                `;
+            } else {
+                toggle.classList.remove('active');
+                labelPerfect.style.color = 'var(--text-muted)';
+                labelSimple.style.color = '#3b82f6'; // Blue for Past Simple
+
+                content.style.background = 'rgba(59, 130, 246, 0.1)';
+                content.innerHTML = `
+                    <h3 style="margin: 0; color: #3b82f6;">Evento Específico / Tempo Definido</h3>
+                    <div style="font-size: 1.5rem; font-family: var(--font-mono); margin-top: 1rem;">"I visited Japan in 2020"</div>
+                    <p style="margin-top: 1rem; color: var(--text-muted);">Foco: Quando aconteceu (história fechada).</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
