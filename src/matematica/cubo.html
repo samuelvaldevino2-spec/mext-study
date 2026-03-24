@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soma e Diferença de Cubos — Matemática MEXT</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #09090b;
+            --bg-card: #18181b;
+            --bg-card-hover: #27272a;
+            --border: #3f3f46;
+            --primary: #8b5cf6; /* Roxo Matemática */
+            --primary-glow: rgba(139, 92, 246, 0.3);
+            --accent: #3b82f6; /* Azul */
+            --success: #10b981;
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            --radius: 16px;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.7;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-weight: 800; letter-spacing: -0.03em; color: #fff; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #fff, #c4b5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary); padding-left: 1rem; }
+        h3 { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
+        p { margin-bottom: 1.2rem; color: #d4d4d8; font-size: 1.05rem; }
+        
+        blockquote {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #fff;
+        }
+
+        .math-text { font-family: var(--font-mono); color: var(--primary); background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.95em; }
+
+        /* Layout */
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .back-link:hover { color: var(--primary); }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover { border-color: var(--primary); box-shadow: 0 10px 40px -10px var(--primary-glow); }
+
+        .hero { text-align: center; padding: 4rem 0; margin-bottom: 2rem; }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 100px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        /* --- INTERACTIVE COMPONENTS --- */
+
+        /* Cube Visualizer */
+        .cube-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .cube-item {
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .cube-visual {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            margin: 0 auto 1rem;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-20deg) rotateY(-20deg);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+        }
+        .cube-visual::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        /* Proof Expansion */
+        .proof-container {
+            background: #000;
+            padding: 2rem;
+            border-radius: 12px;
+            font-family: var(--font-mono);
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+        .proof-line {
+            margin-bottom: 1rem;
+            opacity: 0.3;
+            transition: all 0.5s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .proof-line.active { opacity: 1; color: var(--text-main); transform: translateX(10px); }
+        .proof-line.cancelled { text-decoration: line-through; color: var(--text-muted); opacity: 0.5; }
+        .proof-line.result { color: var(--success); font-weight: bold; font-size: 1.2rem; opacity: 0; transform: scale(0.9); }
+        .proof-line.result.show { opacity: 1; transform: scale(1); }
+
+        /* Wizard Steps */
+        .wizard-step {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--border);
+            transition: all 0.3s;
+        }
+        .wizard-step.active {
+            border-left-color: var(--primary);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        /* Exercises */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .ex-card {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .ex-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+        }
+        .ex-input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+        .ex-input.correct { border-color: var(--success); color: var(--success); }
+        .ex-input.wrong { border-color: #ef4444; color: #ef4444; }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        /* Feynman Flip */
+        .flip-container {
+            perspective: 1000px;
+            height: 250px;
+            cursor: pointer;
+            margin: 2rem 0;
+        }
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        .flip-front { background: linear-gradient(145deg, var(--bg-card), #202023); }
+        .flip-back { background: linear-gradient(145deg, #202023, var(--bg-card)); transform: rotateY(180deg); border-color: var(--primary); }
+
+        /* Utils */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .katex-display { overflow-x: auto; overflow-y: hidden; }
+        
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+        .btn-action:hover { background: #7c3aed; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="matematica.html" class="back-link">← Voltar para Matemática</a>
+
+        <header class="hero fade-in">
+            <span class="hero-badge">Álgebra Avançada</span>
+            <h1>Soma e Diferença de Cubos</h1>
+            <p style="color: var(--text-muted);">Versão rigorosa, clara e autoconsistente</p>
+        </header>
+
+        <!-- 1. O PROBLEMA -->
+        <section class="card fade-in">
+            <h2>🧠 1. O PROBLEMA QUE QUEREMOS RESOLVER</h2>
+            <p>Queremos fatorar expressões com <strong>dois termos</strong>, como:</p>
+            
+            <div style="display: flex; gap: 2rem; justify-content: center; margin: 2rem 0; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; min-width: 200px;">
+                    <div style="font-size: 1.5rem; font-family: var(--font-mono);">$$ x^3 - 8 $$</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 12px; min-width: 200px;">
+                    <div style="font-size: 1.5rem; font-family: var(--font-mono);">$$ x^3 + 27 $$</div>
+                </div>
+            </div>
+
+            <p>Essas expressões têm a forma:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                $$ a^3 \pm b^3 $$
+            </div>
+            <p>Ou seja:</p>
+            <ul>
+                <li>um cubo perfeito</li>
+                <li>outro cubo perfeito</li>
+                <li>ligados por soma ou subtração</li>
+            </ul>
+        </section>
+
+        <!-- 2. O QUE SIGNIFICA CUBO -->
+        <section class="card fade-in">
+            <h2>🎯 2. O QUE SIGNIFICA "CUBO"</h2>
+            <p>Antes de fatorar, precisamos ter certeza de que você entende isso:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1.5rem 0;">
+                $$ a^3 = a \cdot a \cdot a $$
+            </div>
+
+            <div class="cube-grid">
+                <div class="cube-item">
+                    <div class="cube-visual"></div>
+                    <div style="font-family: var(--font-mono);">$$ x^3 $$</div>
+                </div>
+                <div class="cube-item">
+                    <div class="cube-visual" style="background: var(--accent);"></div>
+                    <div style="font-family: var(--font-mono);">$$ 8 = 2^3 $$</div>
+                </div>
+                <div class="cube-item">
+                    <div class="cube-visual" style="background: var(--success);"></div>
+                    <div style="font-family: var(--font-mono);">$$ 27 = 3^3 $$</div>
+                </div>
+            </div>
+
+            <blockquote>👉 Isso é essencial: Você só pode usar esse método se ambos os termos forem <strong>cubos perfeitos</strong>.</blockquote>
+        </section>
+
+        <!-- 3. O OBJETIVO -->
+        <section class="card fade-in">
+            <h2>🧠 3. O OBJETIVO DA FATORAÇÃO</h2>
+            <p>Queremos transformar:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                $$ a^3 \pm b^3 $$
+            </div>
+            <p>em uma multiplicação.</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <h4 style="color: #ef4444; margin-bottom: 1rem;">Diferença de Cubos</h4>
+                    <div style="font-family: var(--font-mono); font-size: 1.1rem;">
+                        $$ a^3 - b^3 = (a - b)(a^2 + ab + b^2) $$
+                    </div>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <h4 style="color: var(--success); margin-bottom: 1rem;">Soma de Cubos</h4>
+                    <div style="font-family: var(--font-mono); font-size: 1.1rem;">
+                        $$ a^3 + b^3 = (a + b)(a^2 - ab + b^2) $$
+                    </div>
+                </div>
+            </div>
+
+            <p style="margin-top: 1.5rem;">⚠️ Observe com atenção:</p>
+            <ul>
+                <li>O primeiro fator segue o sinal original</li>
+                <li>O segundo fator <strong>troca o sinal do meio</strong></li>
+            </ul>
+        </section>
+
+        <!-- 4. PROVA COMPLETA (INTERATIVO) -->
+        <section class="card fade-in">
+            <h2>🔍 4. DE ONDE ISSO VEM (PROVA COMPLETA)</h2>
+            <p>Vamos provar a fórmula da <strong>diferença de cubos</strong> expandindo:</p>
+            <div style="text-align: center; font-size: 1.3rem; margin: 1rem 0; font-family: var(--font-mono);">
+                $$ (a - b)(a^2 + ab + b^2) $$
+            </div>
+
+            <div class="proof-container" id="proof-box">
+                <div class="proof-line active" id="p1">
+                    <span>Passo 1 — Multiplicar o (a):</span>
+                    <span style="margin-left: auto;">$$ a^3 + a^2b + ab^2 $$</span>
+                </div>
+                <div class="proof-line" id="p2">
+                    <span>Passo 2 — Multiplicar o (-b):</span>
+                    <span style="margin-left: auto;">$$ -a^2b - ab^2 - b^3 $$</span>
+                </div>
+                <div class="proof-line" id="p3">
+                    <span>Passo 3 — Somar tudo:</span>
+                    <span style="margin-left: auto; font-size: 0.9rem;">$$ a^3 + \cancel{a^2b} + \cancel{ab^2} - \cancel{a^2b} - \cancel{ab^2} - b^3 $$</span>
+                </div>
+                <div class="proof-line result" id="p4">
+                    <span>Resultado Final:</span>
+                    <span style="margin-left: auto;">$$ a^3 - b^3 $$</span>
+                </div>
+            </div>
+            <button class="btn-action" onclick="runProof()">Ver Expansão Passo a Passo</button>
+
+            <p style="margin-top: 1.5rem;">💥 Os termos do meio se cancelam perfeitamente.</p>
+        </section>
+
+        <!-- 5. INTERPRETAÇÃO -->
+        <section class="card fade-in">
+            <h2>🧠 5. INTERPRETAÇÃO IMPORTANTE</h2>
+            <p>Agora você entende:</p>
+            <blockquote>👉 O segundo fator existe para <strong>cancelar os termos extras</strong></blockquote>
+            <p>Por isso ele tem três termos:</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                <span class="math-text">$$ a^2 $$</span>
+                <span class="math-text">$$ ab $$</span>
+                <span class="math-text">$$ b^2 $$</span>
+            </div>
+        </section>
+
+        <!-- 6. MÉTODO PASSO A PASSO -->
+        <section class="card fade-in">
+            <h2>⚙️ 6. MÉTODO PASSO A PASSO</h2>
+            <p>Claro e executável.</p>
+
+            <div class="wizard-step active">
+                <h4>✅ PASSO 1 — Verificar se há dois termos</h4>
+                <p>Exemplo: $$ x^3 - 8 $$ <br>✔ Apenas dois termos</p>
+            </div>
+
+            <div class="wizard-step">
+                <h4>✅ PASSO 2 — Verificar se são cubos perfeitos</h4>
+                <p>$$ x^3 = (x)^3 $$ <br> $$ 8 = (2)^3 $$ <br>✔ Ambos são cubos</p>
+            </div>
+
+            <div class="wizard-step">
+                <h4>✅ PASSO 3 — Identificar (a) e (b)</h4>
+                <p>$$ a = x, \quad b = 2 $$</p>
+            </div>
+
+            <div class="wizard-step">
+                <h4>✅ PASSO 4 — Identificar o tipo</h4>
+                <p>Sinal "−" → diferença de cubos</p>
+            </div>
+
+            <div class="wizard-step">
+                <h4>✅ PASSO 5 — Montar o primeiro fator</h4>
+                <p>$$ (a - b) = (x - 2) $$</p>
+            </div>
+
+            <div class="wizard-step">
+                <h4>✅ PASSO 6 — Montar o segundo fator</h4>
+                <p>Para diferença de cubos: $$ a^2 + ab + b^2 $$</p>
+                <p>Substituindo: $$ x^2 + 2x + 4 $$</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem; padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border-radius: 12px; border: 1px solid var(--success);">
+                <h3 style="margin: 0; color: var(--success);">✅ RESULTADO FINAL</h3>
+                <div style="font-size: 1.5rem; font-family: var(--font-mono); margin-top: 0.5rem;">
+                    $$ x^3 - 8 = (x - 2)(x^2 + 2x + 4) $$
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. EXEMPLO SOMA -->
+        <section class="card fade-in">
+            <h2>🔁 7. EXEMPLO COMPLETO (SOMA DE CUBOS)</h2>
+            <p>Fatore:</p>
+            <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0;">
+                $$ x^3 + 27 $$
+            </div>
+
+            <ul style="margin-left: 1.5rem; line-height: 2;">
+                <li><strong>Passo 1:</strong> $$ 27 = 3^3 $$</li>
+                <li><strong>Passo 2:</strong> $$ a = x, \quad b = 3 $$</li>
+                <li><strong>Passo 3:</strong> Sinal positivo → soma de cubos</li>
+                <li><strong>Passo 4:</strong> Primeiro fator: $$ (x + 3) $$</li>
+                <li><strong>Passo 5:</strong> Segundo fator: $$ x^2 - 3x + 9 $$</li>
+            </ul>
+
+            <div style="margin-top: 1.5rem; text-align: center; font-weight: bold; color: var(--success);">
+                ✅ Resultado: $$ (x + 3)(x^2 - 3x + 9) $$
+            </div>
+        </section>
+
+        <!-- 8. ERROS COMUNS -->
+        <section class="card fade-in" style="border-color: #ef4444;">
+            <h2 style="color: #ef4444; border-left-color: #ef4444;">⚠️ 8. ERROS MAIS COMUNS</h2>
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li>❌ Usar quando não são cubos</li>
+                <li>❌ Errar o sinal do meio</li>
+                <li>❌ Esquecer um termo</li>
+                <li>❌ Não verificar expandindo</li>
+            </ol>
+        </section>
+
+        <!-- 9. COMO RECONHECER -->
+        <section class="card fade-in">
+            <h2>🧠 9. COMO RECONHECER COM SEGURANÇA</h2>
+            <p>Pergunte sempre:</p>
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li>Tem exatamente dois termos?</li>
+                <li>Ambos são cubos perfeitos?</li>
+                <li>Qual é o sinal entre eles?</li>
+            </ol>
+            <p style="margin-top: 1rem;">Se sim → aplique o método</p>
+        </section>
+
+        <!-- 10. EXERCÍCIOS -->
+        <section class="card fade-in">
+            <h2>🧪 10. EXERCÍCIOS</h2>
+            
+            <h3>🔹 Nível 1</h3>
+            <div class="exercise-grid">
+                <div class="ex-card">
+                    <p>1. $$ x^3 - 27 $$</p>
+                    <input type="text" class="ex-input" placeholder="(x-a)(...)" data-ans="(x-3)(x^2+3x+9)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+                <div class="ex-card">
+                    <p>2. $$ x^3 + 8 $$</p>
+                    <input type="text" class="ex-input" placeholder="(x+a)(...)" data-ans="(x+2)(x^2-2x+4)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">🔹 Nível 2 (MEXT)</h3>
+            <div class="exercise-grid">
+                <div class="ex-card">
+                    <p>1. $$ 8x^3 - 1 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax-b)(...)" data-ans="(2x-1)(4x^2+2x+1)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+                <div class="ex-card">
+                    <p>2. $$ 27x^3 + 64 $$</p>
+                    <input type="text" class="ex-input" placeholder="(ax+b)(...)" data-ans="(3x+4)(9x^2-12x+16)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">🔹 Nível 3</h3>
+            <div class="exercise-grid">
+                <div class="ex-card">
+                    <p>1. $$ x^3 - 125 $$</p>
+                    <input type="text" class="ex-input" placeholder="(x-a)(...)" data-ans="(x-5)(x^2+5x+25)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 2rem;">🔹 Nível 4 (Desafio)</h3>
+            <div class="exercise-grid">
+                <div class="ex-card" style="border-color: var(--primary);">
+                    <p>1. Fatore completamente: $$ x^6 - 64 $$</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">(Dica: faça em etapas)</p>
+                    <input type="text" class="ex-input" placeholder="Resposta completa" data-ans="(x-2)(x+2)(x^2+2x+4)(x^2-2x+4)">
+                    <button class="btn-check" onclick="checkEx(this)">Verificar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. DESAFIO FEYNMAN -->
+        <section class="card fade-in">
+            <h2>🧠 11. DESAFIO FEYNMAN</h2>
+            <p>Explique:</p>
+            <p>👉 Por que o segundo fator tem três termos?</p>
+            <p>Se você souber responder isso com clareza… você não decorou — você entendeu.</p>
+
+            <div class="flip-container" onclick="this.classList.toggle('flipped')">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <h3>Clique para ver a explicação</h3>
+                        <p style="margin-top: 1rem; color: var(--text-muted);">(Flip Card)</p>
+                    </div>
+                    <div class="flip-back">
+                        <h3 style="color: var(--primary);">Explicação:</h3>
+                        <p>Os três termos ($$a^2, ab, b^2$$) são necessários para criar os termos intermediários que se cancelam durante a expansão.</p>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">Sem eles, sobrariam termos "sujos" no resultado final.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 12. RESUMO E MISSÃO -->
+        <section class="fade-in" style="margin-bottom: 4rem;">
+            <div class="card" style="border-color: var(--primary);">
+                <h2 style="border: none; padding: 0; margin-bottom: 1.5rem;">⚔️ 12. RESUMO DE COMBATE</h2>
+                <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <li style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">✅ Dois termos</li>
+                    <li style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">✅ Ambos cubos</li>
+                    <li style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">✅ Identifique o sinal</li>
+                    <li style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">✅ Monte dois fatores</li>
+                    <li style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">✅ Verifique expandindo</li>
+                </ul>
+            </div>
+
+            <div class="card" style="text-align: center; border-color: var(--success); background: linear-gradient(145deg, #18181b, #064e3b);">
+                <h2 style="border: none; padding: 0; margin: 0; color: var(--success);">🚀 MISSÃO</h2>
+                <p style="margin-top: 1rem;">Fatore:</p>
+                <div style="font-size: 2rem; margin: 1.5rem 0; font-family: var(--font-mono); color: #fff;">
+                    $$ 8x^3 + 27 $$
+                </div>
+                <p>Mostre:</p>
+                <ul style="display: inline-block; text-align: left; margin-top: 1rem; color: var(--text-muted);">
+                    <li>• identificação dos cubos</li>
+                    <li>• escolha do tipo</li>
+                    <li>• construção completa</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- 1. Inicializar KaTeX ---
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError : false
+            });
+
+            // Observer para animações de entrada
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+
+        // --- 2. Prova Interativa ---
+        function runProof() {
+            const p1 = document.getElementById('p1');
+            const p2 = document.getElementById('p2');
+            const p3 = document.getElementById('p3');
+            const p4 = document.getElementById('p4');
+
+            // Reset
+            [p1, p2, p3, p4].forEach(el => {
+                el.classList.remove('active', 'cancelled', 'show');
+                if(el.id === 'p4') el.style.opacity = 0;
+            });
+
+            setTimeout(() => p1.classList.add('active'), 100);
+            setTimeout(() => p2.classList.add('active'), 1000);
+            setTimeout(() => {
+                p3.classList.add('active');
+                p3.classList.add('cancelled'); // Risca os termos
+            }, 2000);
+            setTimeout(() => p4.classList.add('show'), 3000);
+        }
+
+        // --- 3. Validação de Exercícios ---
+        function checkEx(btn) {
+            const input = btn.previousElementSibling;
+            const userVal = input.value.replace(/\s/g, '').toLowerCase();
+            const correctVal = input.getAttribute('data-ans').replace(/\s/g, '').toLowerCase();
+            
+            let isCorrect = false;
+            if (userVal === correctVal) isCorrect = true;
+            
+            // Check swap for factors
+            const parts = correctVal.split(')(');
+            if (parts.length >= 2) {
+                // Simple reverse check for 2 factors
+                const swapped = parts[1].replace('(', '') + ')(' + parts[0].replace(')', '');
+                if (userVal === swapped) isCorrect = true;
+            }
+
+            if (isCorrect) {
+                input.classList.add('correct');
+                input.classList.remove('wrong');
+                btn.textContent = "Correto! ✅";
+                btn.style.background = "var(--success)";
+            } else {
+                input.classList.add('wrong');
+                input.classList.remove('correct');
+                btn.textContent = "Tente novamente ❌";
+                btn.style.background = "#ef4444";
+            }
+        }
+    </script>
+</body>
+</html>
